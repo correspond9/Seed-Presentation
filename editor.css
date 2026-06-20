@@ -497,3 +497,91 @@ body.drag-mode [contenteditable="true"].is-positioned {
 }
 
 body.edit-mode .scroll-hint { display: block; }
+
+/* Inserted text boxes and images */
+.inserted-wrap {
+  position: absolute;
+  z-index: 20;
+}
+
+.inserted-textbox {
+  min-width: 180px;
+  min-height: 48px;
+  padding: 10px 12px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 2px dashed rgba(34, 211, 238, 0.55);
+  border-radius: 8px;
+  color: #f8fafc;
+  font-size: 14px;
+  line-height: 1.45;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.inserted-wrap-image {
+  padding: 4px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 2px dashed rgba(245, 158, 11, 0.55);
+  border-radius: 8px;
+  line-height: 0;
+}
+
+.inserted-image,
+.inserted-wrap-image img {
+  display: block;
+  max-width: 360px;
+  max-height: 280px;
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+}
+
+.remove-inserted-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.remove-inserted-btn:hover {
+  background: #dc2626;
+}
+
+#insertTextBoxBtn {
+  background: #0e7490;
+  border-color: #22d3ee;
+}
+
+#insertImageBtn {
+  background: #b45309;
+  border-color: #fbbf24;
+}
+
+#insertTextBoxBtn:hover,
+#insertImageBtn:hover {
+  filter: brightness(1.1);
+}
+
+body.drag-mode .inserted-textbox,
+body.drag-mode .inserted-image,
+body.drag-mode .inserted-wrap {
+  cursor: grab;
+}
+
+body.drag-mode .inserted-textbox:active,
+body.drag-mode .inserted-image:active,
+body.drag-mode .inserted-wrap:active,
+body.drag-mode .inserted-image.is-dragging,
+body.drag-mode .inserted-textbox.is-dragging,
+body.drag-mode .inserted-wrap.is-dragging {
+  cursor: grabbing;
+}

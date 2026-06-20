@@ -1,6 +1,6 @@
 (function () {
   const editableSelectors =
-    'h1,h2,h3,h4,p,li,td,th,.eyebrow,.value,.label,.title,.desc,.phase,.subtitle,.contact,.flow-node,.stat-card strong';
+    'h1,h2,h3,h4,p,li,td,th,.eyebrow,.value,.label,.title,.desc,.phase,.subtitle,.contact,.flow-node,.stat-card strong,.inserted-textbox';
 
   let isEditable = false;
   let isDirty = false;
@@ -255,6 +255,157 @@
     }
   }
 
+  function getCurrentSlideCanvas() {
+    const section = document.querySelector('.reveal .slides > section.present');
+    if (!section) {
+      showToast('No slide selected.', true);
+      return null;
+    }
+    let wrap = section.querySelector(':scope > .slide-zoom-wrap');
+    if (!wrap) {
+      wrap = document.createElement('div');
+      wrap.className = 'slide-zoom-wrap';
+      while (section.firstChild) wrap.appendChild(section.firstChild);
+      section.appendChild(wrap);
+      applySlideZoom();
+    }
+    wrap.style.position = 'relative';
+    return wrap;
+  }
+
+  function bindRemoveButton(btn, wrapper) {
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      wrapper.remove();
+      isDirty = true;
+      buildSlidePreviews();
+      showToast('Removed.');
+    });
+  }
+
+  function setupDraggable(el) {
+    if (el.dataset.dragBound) return;
+    el.dataset.dragBound = '1';
+    el.addEventListener('mousedown', onDragStart);
+  }
+
+  function setupInsertedTextbox(box) {
+    box.setAttribute('contenteditable', 'true');
+    box.setAttribute('spellcheck', 'true');
+    if (!box.dataset.inputBound) {
+      box.dataset.inputBound = '1';
+      box.addEventListener('input', () => { isDirty = true; });
+      box.addEventListener('focus', () => {
+        if (box.textContent.trim() === 'Type your text here...') box.textContent = '';
+      });
+    }
+  }
+
+  function createInsertedWrapper(type, child) {
+    const wrap = document.createElement('div');
+    wrap.className = 'inserted-wrap inserted-wrap-' + type + ' is-positioned';
+    wrap.setAttribute('data-inserted', type);
+    wrap.style.position = 'absolute';
+    wrap.style.zIndex = '20';
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'remove-inserted-btn';
+    removeBtn.textContent = '\u00d7';
+    removeBtn.title = type === 'image' ? 'Remove image' : 'Remove text box';
+
+    wrap.appendChild(child);
+    wrap.appendChild(removeBtn);
+    bindRemoveButton(removeBtn, wrap);
+    setupDraggable(wrap);
+    return wrap;
+  }
+
+  function setupInsertedImage(wrapper) {
+    setupDraggable(wrapper);
+    const removeBtn = wrapper.querySelector('.remove-inserted-btn');
+    if (removeBtn) bindRemoveButton(removeBtn, wrapper);
+  }
+
+  function enableInsertedElements() {
+    document.querySelectorAll('.inserted-wrap-textbox .inserted-textbox').forEach(setupInsertedTextbox);
+    document.querySelectorAll('.inserted-wrap-textbox, .inserted-wrap-image, .inserted-image').forEach((wrap) => {
+      if (wrap.classList.contains('inserted-textbox')) return;
+      setupDraggable(wrap);
+      const removeBtn = wrap.querySelector('.remove-inserted-btn');
+      if (removeBtn) bindRemoveButton(removeBtn, wrap);
+    });
+    // Legacy items saved before wrapper structure
+    document.querySelectorAll('.inserted-textbox:not(.inserted-wrap .inserted-textbox)').forEach((box) => {
+      setupInsertedTextbox(box);
+      setupDraggable(box);
+    });
+  }
+
+  function insertTextBox() {
+    const canvas = getCurrentSlideCanvas();
+    if (!canvas) return;
+
+    const count = canvas.querySelectorAll('.inserted-wrap-textbox, .inserted-textbox').length;
+    const box = document.createElement('div');
+    box.className = 'inserted-textbox';
+    box.style.width = '340px';
+    box.textContent = 'Type your text here...';
+    setupInsertedTextbox(box);
+
+    const wrap = createInsertedWrapper('textbox', box);
+    wrap.style.left = (60 + count * 24) + 'px';
+    wrap.style.top = (100 + count * 24) + 'px';
+
+    canvas.appendChild(wrap);
+    box.focus();
+    isDirty = true;
+    buildSlidePreviews();
+    showToast('Text box added! Click inside to type. Use MOVE TEXT to drag it.');
+  }
+
+  function insertImageFromFile(file) {
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showToast('Please choose an image or GIF file.', true);
+      return;
+    }
+
+    if (file.size > 3 * 1024 * 1024) {
+      showToast('File is too large. Please use an image under 3 MB.', true);
+      return;
+    }
+
+    const canvas = getCurrentSlideCanvas();
+    if (!canvas) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const count = canvas.querySelectorAll('.inserted-wrap-image, .inserted-image').length;
+
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.alt = file.name.replace(/\.[^.]+$/, '');
+      img.draggable = false;
+
+      const wrap = createInsertedWrapper('image', img);
+      wrap.style.left = (80 + count * 20) + 'px';
+      wrap.style.top = (160 + count * 20) + 'px';
+
+      canvas.appendChild(wrap);
+
+      isDirty = true;
+      buildSlidePreviews();
+      showToast('Image added! Use MOVE TEXT to drag it, then SAVE CHANGES.');
+    };
+    reader.onerror = () => showToast('Could not read that image file.', true);
+    reader.readAsDataURL(file);
+  }
+
   function toggleDragMode() {
     dragMode = !dragMode;
     document.body.classList.toggle('drag-mode', dragMode);
@@ -277,6 +428,7 @@
 
   function onDragStart(e) {
     if (!dragMode) return;
+    if (e.target.closest('.remove-inserted-btn')) return;
     e.preventDefault();
     e.stopPropagation();
 
@@ -351,14 +503,22 @@
       if (el.closest('#editorBar') || el.closest('script') || el.closest('canvas')) return;
       el.setAttribute('contenteditable', 'true');
       el.setAttribute('spellcheck', 'true');
-      el.addEventListener('input', () => { isDirty = true; });
-      el.addEventListener('mousedown', onDragStart);
+      if (!el.dataset.inputBound) {
+        el.dataset.inputBound = '1';
+        el.addEventListener('input', () => { isDirty = true; });
+      }
+      setupDraggable(el);
     });
     document.querySelectorAll('.fund-legend > div').forEach((el) => {
       el.setAttribute('contenteditable', 'true');
-      el.addEventListener('input', () => { isDirty = true; });
-      el.addEventListener('mousedown', onDragStart);
+      el.setAttribute('spellcheck', 'true');
+      if (!el.dataset.inputBound) {
+        el.dataset.inputBound = '1';
+        el.addEventListener('input', () => { isDirty = true; });
+      }
+      setupDraggable(el);
     });
+    enableInsertedElements();
   }
 
   function disableEditing() {
@@ -511,6 +671,21 @@
 
       const togglePreviewBtn = document.getElementById('togglePreviewBtn');
       if (togglePreviewBtn) togglePreviewBtn.addEventListener('click', togglePreviewPanel);
+
+      const insertTextBoxBtn = document.getElementById('insertTextBoxBtn');
+      if (insertTextBoxBtn) insertTextBoxBtn.addEventListener('click', insertTextBox);
+
+      const insertImageBtn = document.getElementById('insertImageBtn');
+      const insertImageInput = document.getElementById('insertImageInput');
+      if (insertImageBtn && insertImageInput) {
+        insertImageBtn.addEventListener('click', () => insertImageInput.click());
+        insertImageInput.addEventListener('change', () => {
+          if (insertImageInput.files && insertImageInput.files[0]) {
+            insertImageFromFile(insertImageInput.files[0]);
+          }
+          insertImageInput.value = '';
+        });
+      }
 
       const zoomInBtn = document.getElementById('zoomInBtn');
       const zoomOutBtn = document.getElementById('zoomOutBtn');
