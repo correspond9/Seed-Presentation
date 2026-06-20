@@ -6,5 +6,6 @@ node_modules/
 .env.vercel
 *.log
 .DS_Store
+backups/*.json
 
 .vercel
