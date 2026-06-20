@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XchangeByte — Investor Presentation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body class="edit-mode">
+<div id="editorBar">
+  <div class="editor-instructions">
+    <strong>Editing mode:</strong>
+    Click any text to change it &nbsp;|&nbsp;
+    Use arrow keys or buttons to move between slides &nbsp;|&nbsp;
+    Click <strong>SAVE CHANGES</strong> so everyone sees your updates &nbsp;|&nbsp;
+    Click <strong>REFRESH LATEST</strong> to load changes made by others
+  </div>
+  <div class="editor-controls">
+    <button type="button" id="prevBtn">&larr; Previous</button>
+    <span id="slideCounter">Slide 1</span>
+    <button type="button" id="nextBtn">Next &rarr;</button>
+    <button type="button" id="refreshBtn">REFRESH LATEST</button>
+    <span id="lastSaved"></span>
+    <button type="button" id="saveBtn">SAVE CHANGES</button>
+  </div>
+</div>
+<div class="save-toast" id="saveToast">Saved!</div>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 1: HOOK -->
+      <section data-autoslide="8000">
+        <div class="slide-bg">
+          <video autoplay muted loop playsinline poster="">
+            <source src="https://cdn.coverr.co/videos/coverr-digital-stock-market-data-animations-9765/1080p.mp4" type="video/mp4">
+          </video>
+          <div class="vignette"></div>
+        </div>
+        <div class="content-wrap">
+          <div class="eyebrow fragment fade-up">The Untold Story</div>
+          <h2 class="fragment fade-up" data-fragment-index="1">Every day, millions of Indians want to trade crypto.</h2>
+          <p class="subtitle fragment fade-up" data-fragment-index="2">But almost none of them can legally move money from their own bank account into a trading platform — and back again.</p>
+          <p class="fragment fade-up" data-fragment-index="3" style="margin-top:2rem; font-size:1.1em; color:#fbbf24;">What if someone solved that first?</p>
+        </div>
+        
+      </section>
+
+      <!-- SLIDE 2: TITLE -->
+      <section data-background-color="#030712">
+        <div class="slide-bg"><div class="gradient-mesh"></div><div class="grid-overlay"></div></div>
+        <div class="content-wrap" style="text-align:center; padding-top:2rem;">
+          <h1 class="hero-title fragment fade-up">XchangeByte</h1>
+          <p class="subtitle fragment fade-up" data-fragment-index="2" style="margin:0 auto;">India's Compliant Crypto &amp; Forex Trading Platform</p>
+          <p class="fragment fade-up" data-fragment-index="3" style="margin-top:1.5rem; color:#94a3b8;">Precision Trading For The Digital Age</p>
+          <div class="card-grid fragment fade-up" data-fragment-index="4" style="max-width:700px; margin:2rem auto 0;">
+            <div class="stat-card"><div class="value">₹2.5T+</div><div class="label">Global Crypto Market</div></div>
+            <div class="stat-card"><div class="value">10 Cr+</div><div class="label">Indian Crypto Users</div></div>
+            <div class="stat-card"><div class="value">1st</div><div class="label">Legal Bank Pay-In/Out</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 1 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="chapter-number">01</div>
+        <h2>The Problem</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">Why India's crypto traders are stuck — and paying the price.</p>
+      </section>
+
+      <!-- SLIDE 3: THE PROBLEM -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div><div class="grid-overlay"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 01 · The Pain</div>
+          <h2>Indian traders face a broken money flow</h2>
+          <div class="two-col">
+            <div>
+              <ul class="check-list" style="margin-top:1rem;">
+                <li class="fragment fade-up">Most global crypto brokers <strong>do not accept INR</strong> from Indian bank accounts</li>
+                <li class="fragment fade-up">Traders resort to <strong>P2P transfers</strong> — risky, slow, and legally grey</li>
+                <li class="fragment fade-up">Banks frequently <strong>freeze accounts</strong> linked to unofficial crypto flows</li>
+                <li class="fragment fade-up">Withdrawals take days through informal channels with <strong>no guarantee</strong></li>
+                <li class="fragment fade-up">No single platform offers <strong>crypto + forex</strong> with full Indian compliance</li>
+              </ul>
+            </div>
+            <div class="fragment fade-up">
+              <div class="stat-card" style="border-color:rgba(248,113,113,0.4);">
+                <div class="value" style="color:#f87171;">~95%</div>
+                <div class="label">of Indian crypto traders cannot legally pay-in from their whitelisted bank account to a global broker</div>
+              </div>
+              <div class="stat-card" style="margin-top:1rem;">
+                <div class="value" style="color:#fbbf24;">₹15,000 Cr+</div>
+                <div class="label">estimated annual Indian crypto trading volume happening outside compliant rails</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: WHAT TRADERS WANT -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">What Traders Actually Want</div>
+          <h2>Simple. Legal. From their own bank.</h2>
+          <div class="flow-row fragment fade-up">
+            <div class="flow-node"><span class="icon">🏦</span>Indian Bank Account<br><small style="color:#94a3b8">Whitelisted &amp; Verified</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node" style="border-color:rgba(16,185,129,0.5);"><span class="icon">💳</span>Pay-In (INR)<br><small style="color:#94a3b8">Instant UPI / NEFT / RTGS</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node" style="border-color:rgba(59,130,246,0.5);"><span class="icon">📈</span>Trade Crypto &amp; Forex<br><small style="color:#94a3b8">BTC · ETH · USDT · Pairs</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node" style="border-color:rgba(16,185,129,0.5);"><span class="icon">💰</span>Pay-Out (INR)<br><small style="color:#94a3b8">Back to same bank account</small></div>
+          </div>
+          <p class="fragment fade-up" style="text-align:center; margin-top:1.5rem; font-size:1.05em; color:#22d3ee;">
+            <strong>XchangeByte will be one of the very few platforms to offer this — fully compliant with Indian law.</strong>
+          </p>
+        </div>
+      </section>
+
+      <!-- CHAPTER 2 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">02</div>
+        <h2>The Opportunity</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">A massive market waiting for a trusted front door.</p>
+      </section>
+
+      <!-- SLIDE 5: MARKET SIZE -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 02 · Market Size</div>
+          <h2>The Crypto Opportunity</h2>
+          <div class="card-grid">
+            <div class="stat-card fragment fade-up">
+              <div class="value">$2.2–2.5T</div>
+              <div class="label">Global crypto market capitalization</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value">$75–120B</div>
+              <div class="label">Daily global trading volume</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value">9–12 Cr</div>
+              <div class="label">Estimated crypto users in India</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value">18–35</div>
+              <div class="label">Core demographic — digitally native investors</div>
+            </div>
+          </div>
+          <p class="fragment fade-up" style="margin-top:1.5rem;">India consistently ranks among the <strong>world's top 3 crypto adoption markets</strong> — yet only a handful of exchanges operate under India's FIU registration framework. Massive demand. Very few trusted, compliant platforms.</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: FOREX ADD-ON -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Dual Market Play</div>
+          <h2>Crypto + Forex = Larger addressable market</h2>
+          <div class="two-col">
+            <div>
+              <h3>Crypto Trading</h3>
+              <ul class="check-list">
+                <li>BTC, ETH, USDT and 50+ pairs</li>
+                <li>Spot and derivatives (as regulations permit)</li>
+                <li>Multi-chain wallet support (ERC-20, TRC-20, BEP-20)</li>
+              </ul>
+              <h3 style="margin-top:1.5rem;">Forex Trading</h3>
+              <ul class="check-list">
+                <li>Major, minor and exotic currency pairs</li>
+                <li>Same compliant INR funding rails</li>
+                <li>Cross-sell to existing crypto user base</li>
+              </ul>
+            </div>
+            <div class="fragment fade-up">
+              <div class="chart-box">
+                <canvas id="marketChart"></canvas>
+              </div>
+              <p style="font-size:0.75em; color:#64748b; text-align:center; margin-top:0.5rem;">India digital trading market growth projection (₹ Crore)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 3 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">03</div>
+        <h2>Our Solution</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">Meet XchangeByte — built for India, built for trust.</p>
+      </section>
+
+      <!-- SLIDE 7: SOLUTION -->
+      <section data-autoslide="10000">
+        <div class="slide-bg">
+          <video autoplay muted loop playsinline>
+            <source src="https://cdn.coverr.co/videos/coverr-abstract-digital-network-connection-7426/1080p.mp4" type="video/mp4">
+          </video>
+          <div class="vignette"></div>
+        </div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 03 · The Platform</div>
+          <h2>XchangeByte: Compliant by design</h2>
+          <div class="card-grid">
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="font-size:1.5em;">🏦</div>
+              <div class="label"><strong>Legal Bank Pay-In/Out</strong><br>INR from whitelisted Indian bank accounts via UPI, NEFT, RTGS</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="font-size:1.5em;">🛡️</div>
+              <div class="label"><strong>FIU-IND Registered</strong><br>Full PMLA compliance, AML/CFT, KYC, STR reporting</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="font-size:1.5em;">⚡</div>
+              <div class="label"><strong>Institutional-Grade Tech</strong><br>Matching engine, multi-chain wallets, real-time risk engine</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="font-size:1.5em;">🌐</div>
+              <div class="label"><strong>Crypto + Forex</strong><br>One platform, one account, one compliant money flow</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: COMPETITIVE COMPARISON -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Why We Win</div>
+          <h2>Competitive landscape</h2>
+          <table class="compare-table fragment fade-up">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Global Brokers</th>
+                <th>Indian Exchanges</th>
+                <th style="color:#22d3ee;">XchangeByte</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Legal INR bank pay-in</td>
+                <td class="no">✗ Rare</td>
+                <td class="yes">✓ Yes</td>
+                <td class="yes"><strong>✓ Yes</strong></td>
+              </tr>
+              <tr>
+                <td>Legal INR bank pay-out</td>
+                <td class="no">✗ Rare</td>
+                <td class="yes">✓ Yes</td>
+                <td class="yes"><strong>✓ Yes</strong></td>
+              </tr>
+              <tr>
+                <td>Crypto + Forex combined</td>
+                <td class="yes">✓ Some</td>
+                <td class="no">✗ No</td>
+                <td class="yes"><strong>✓ Yes</strong></td>
+              </tr>
+              <tr>
+                <td>FIU-IND compliance</td>
+                <td class="no">✗ No</td>
+                <td class="yes">✓ Some</td>
+                <td class="yes"><strong>✓ Yes</strong></td>
+              </tr>
+              <tr>
+                <td>Multi-chain wallets</td>
+                <td class="yes">✓ Yes</td>
+                <td class="yes">✓ Limited</td>
+                <td class="yes"><strong>✓ ERC/TRC/BEP</strong></td>
+              </tr>
+              <tr class="highlight-row">
+                <td><strong>Whitelisted bank account flow</strong></td>
+                <td class="no">✗ Almost none</td>
+                <td class="no">✗ Limited</td>
+                <td class="yes"><strong>✓ Core USP</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CHAPTER 4 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">04</div>
+        <h2>Compliance &amp; Trust</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">Our regulatory moat — not an afterthought.</p>
+      </section>
+
+      <!-- SLIDE 9: COMPLIANCE 1 -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 04 · Regulatory Framework</div>
+          <h2>Built for India's compliance landscape</h2>
+          <div class="two-col">
+            <div>
+              <h3>FIU-IND Registration (PMLA)</h3>
+              <ul class="check-list">
+                <li>Register as Reporting Entity under PMLA</li>
+                <li>Appoint Principal Officer &amp; Compliance Officer</li>
+                <li>Written AML/CFT policies</li>
+                <li>Transaction monitoring &amp; STR filing</li>
+                <li>Sanctions screening</li>
+              </ul>
+              <h3 style="margin-top:1rem;">KYC Requirements</h3>
+              <ul class="check-list">
+                <li>PAN verification</li>
+                <li>Aadhaar / official ID verification</li>
+                <li>Address verification &amp; risk profiling</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Transfer Compliance</h3>
+              <ul class="check-list">
+                <li>Sender/receiver identification (Travel Rule)</li>
+                <li>Cross-border movement monitoring</li>
+                <li>Counterparty information sharing</li>
+              </ul>
+              <h3 style="margin-top:1rem;">Tax &amp; Corporate</h3>
+              <ul class="check-list">
+                <li>30% VDA tax compliance support</li>
+                <li>1% TDS deduction &amp; reporting</li>
+                <li>GST considerations</li>
+                <li>Annual filings, audits, board governance</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: SECURITY -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Security Architecture</div>
+          <h2>Enterprise-grade protection</h2>
+          <div class="card-grid">
+            <div class="stat-card fragment fade-up">
+              <strong>Cold + Hot Wallet Architecture</strong>
+              <p style="font-size:0.8em; margin:0.5rem 0 0; color:#94a3b8;">95%+ assets in cold storage with multi-sig security</p>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <strong>Regular Security Audits</strong>
+              <p style="font-size:0.8em; margin:0.5rem 0 0; color:#94a3b8;">Third-party penetration testing &amp; code audits</p>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <strong>Real-Time Surveillance</strong>
+              <p style="font-size:0.8em; margin:0.5rem 0 0; color:#94a3b8;">Fraud detection, anomaly alerts, trade surveillance</p>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <strong>Incident Response</strong>
+              <p style="font-size:0.8em; margin:0.5rem 0 0; color:#94a3b8;">Documented IR procedures &amp; cybersecurity governance</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 5 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">05</div>
+        <h2>Technology</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">The engine behind every trade.</p>
+      </section>
+
+      <!-- SLIDE 11: TECH STACK -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div><div class="grid-overlay"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 05 · Platform Architecture</div>
+          <h2>Technology stack</h2>
+          <div class="two-col">
+            <div>
+              <h3>Core Trading Engine</h3>
+              <ul class="check-list">
+                <li>High-performance matching engine (sub-millisecond latency)</li>
+                <li>Order book management &amp; liquidity aggregation</li>
+                <li>Risk engine with real-time margin calculations</li>
+                <li>Trade surveillance &amp; compliance dashboard</li>
+              </ul>
+              <h3 style="margin-top:1rem;">Wallet Infrastructure</h3>
+              <ul class="check-list">
+                <li>ERC-20 · TRC-20 · BEP-20 multi-chain support</li>
+                <li>Automated deposit detection &amp; reconciliation</li>
+                <li>Institutional custody integration</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Banking &amp; Payments</h3>
+              <ul class="check-list">
+                <li>INR deposit/withdrawal via banking partnerships</li>
+                <li>Payment gateway integration (UPI, NEFT, RTGS)</li>
+                <li>Automated reconciliation systems</li>
+                <li>Fraud monitoring on all money flows</li>
+              </ul>
+              <h3 style="margin-top:1rem;">Platform Delivery</h3>
+              <ul class="check-list">
+                <li>Responsive web application</li>
+                <li>Native iOS &amp; Android mobile apps</li>
+                <li>REST &amp; WebSocket APIs for advanced traders</li>
+                <li>Dedicated server deployment with 99.9% uptime SLA target</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: PROGRESS -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Where We Are Today</div>
+          <h2>Development progress</h2>
+          <div class="timeline">
+            <div class="timeline-item active fragment fade-up">
+              <div class="phase">✓ Done</div>
+              <div class="title">Foundation</div>
+              <div class="desc">VPS secured, domain registered, platform architecture designed</div>
+            </div>
+            <div class="timeline-item active fragment fade-up">
+              <div class="phase">● In Progress</div>
+              <div class="title">Core Platform</div>
+              <div class="desc">Web app development, blockchain integration, wallet systems</div>
+            </div>
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Next</div>
+              <div class="title">Integration</div>
+              <div class="desc">Banking rails, FIU registration, payment gateway</div>
+            </div>
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Q3 2026</div>
+              <div class="title">Beta Launch</div>
+              <div class="desc">Closed beta with 1,000 early users</div>
+            </div>
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Q4 2026</div>
+              <div class="title">Public Launch</div>
+              <div class="desc">Full launch with mobile apps on App Store &amp; Play Store</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 6 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">06</div>
+        <h2>Business Model</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">Three revenue engines. One platform.</p>
+      </section>
+
+      <!-- SLIDE 13: BUSINESS MODEL -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 06 · Revenue</div>
+          <h2>How we make money</h2>
+          <div class="card-grid">
+            <div class="stat-card fragment fade-up" style="border-top:3px solid #22d3ee;">
+              <h3 style="margin:0;">Brokerage Fees</h3>
+              <p style="font-size:0.82em; color:#94a3b8; margin:0.5rem 0;">0.10% – 0.25% per trade. Scales directly with trading volume. Primary revenue driver.</p>
+              <div class="value" style="font-size:1.4em; margin-top:0.5rem;">~60% of revenue</div>
+            </div>
+            <div class="stat-card fragment fade-up" style="border-top:3px solid #8b5cf6;">
+              <h3 style="margin:0;">Spread Income</h3>
+              <p style="font-size:0.82em; color:#94a3b8; margin:0.5rem 0;">Bid-ask spread on every transaction. Recurring income from liquidity provision.</p>
+              <div class="value" style="font-size:1.4em; margin-top:0.5rem; color:#8b5cf6;">~25% of revenue</div>
+            </div>
+            <div class="stat-card fragment fade-up" style="border-top:3px solid #fbbf24;">
+              <h3 style="margin:0;">Premium Subscriptions</h3>
+              <p style="font-size:0.82em; color:#94a3b8; margin:0.5rem 0;">₹499–₹1,999/month. Lower fees, analytics, priority support. Predictable recurring revenue.</p>
+              <div class="value" style="font-size:1.4em; margin-top:0.5rem; color:#fbbf24;">~15% of revenue</div>
+            </div>
+          </div>
+          <p class="fragment fade-up" style="margin-top:1.5rem; text-align:center; color:#10b981; font-weight:600;">High operating leverage — revenue grows faster than costs once platform is live.</p>
+        </div>
+      </section>
+
+      <!-- SLIDE 14: UNIT ECONOMICS -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Unit Economics</div>
+          <h2>Every active trader is highly profitable</h2>
+          <div class="card-grid">
+            <div class="stat-card fragment fade-up">
+              <div class="value">₹2.5L</div>
+              <div class="label">Avg. monthly trading volume per active user</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value">₹375</div>
+              <div class="label">Monthly revenue per user (0.15% blended take rate)</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value">₹4,500</div>
+              <div class="label">Annual revenue per active user</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value">&lt;₹800</div>
+              <div class="label">Annual acquisition + service cost per user</div>
+            </div>
+          </div>
+          <p class="fragment fade-up" style="margin-top:1.5rem; text-align:center; font-size:1.1em;">
+            <strong style="color:#10b981;">~5.6x LTV/CAC ratio</strong> — exceptional unit economics for a fintech platform
+          </p>
+        </div>
+      </section>
+
+      <!-- CHAPTER 7 - THE MONEY SLIDE -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">07</div>
+        <h2>Financial Projections</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">Conservative estimates. Extraordinary upside.</p>
+      </section>
+
+      <!-- SLIDE 15: FINANCIALS -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 07 · The Numbers</div>
+          <h2>3-year revenue projection</h2>
+          <div class="two-col">
+            <div class="chart-box fragment fade-up">
+              <canvas id="revenueChart"></canvas>
+            </div>
+            <div>
+              <table class="compare-table fragment fade-up">
+                <thead>
+                  <tr><th>Metric</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Registered Users</td><td>25,000</td><td>1,00,000</td><td>3,00,000</td></tr>
+                  <tr><td>Active Traders</td><td>8,000</td><td>35,000</td><td>1,00,000</td></tr>
+                  <tr><td>Annual Volume</td><td>₹1,920 Cr</td><td>₹12,600 Cr</td><td>₹48,000 Cr</td></tr>
+                  <tr style="color:#22d3ee; font-weight:700;"><td>Total Revenue</td><td>₹6.2 Cr</td><td>₹31 Cr</td><td>₹96 Cr</td></tr>
+                  <tr style="color:#10b981;"><td>EBITDA Margin</td><td>15%</td><td>35%</td><td>48%</td></tr>
+                  <tr style="color:#10b981; font-weight:700;"><td>EBITDA</td><td>₹0.9 Cr</td><td>₹10.9 Cr</td><td>₹46 Cr</td></tr>
+                </tbody>
+              </table>
+              <p style="font-size:0.72em; color:#64748b; margin-top:0.75rem;">*Conservative assumptions. Year 1 = 6 months post-launch. Assumes 0.15% blended take rate.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 16: INVESTOR RETURNS -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Investor Returns</div>
+          <h2>Path to strong returns in 24–36 months</h2>
+          <div class="card-grid">
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="color:#fbbf24;">8–12x</div>
+              <div class="label">Projected revenue multiple on seed investment by Year 3</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="color:#10b981;">18–24 mo</div>
+              <div class="label">Break-even timeline post-launch</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="color:#8b5cf6;">Series A</div>
+              <div class="label">Target raise at ₹300–500 Cr valuation (Month 18–24)</div>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <div class="value" style="color:#22d3ee;">IPO / M&A</div>
+              <div class="label">Long-term exit via acquisition by global exchange or public listing</div>
+            </div>
+          </div>
+          <p class="fragment fade-up" style="margin-top:1.5rem; text-align:center;">
+            Comparable: CoinDCX raised at $2.1B valuation · WazirX at $600M peak · Indian crypto market still early innings
+          </p>
+        </div>
+      </section>
+
+      <!-- CHAPTER 8 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">08</div>
+        <h2>Go-to-Market</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">How we acquire our first 100,000 users.</p>
+      </section>
+
+      <!-- SLIDE 17: GTM -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 08 · Growth Strategy</div>
+          <h2>Go-to-market plan</h2>
+          <div class="card-grid">
+            <div class="stat-card fragment fade-up">
+              <strong>Phase 1: Stealth Beta</strong>
+              <p style="font-size:0.8em; color:#94a3b8; margin-top:0.5rem;">1,000 hand-picked traders from trading communities. Referral-only access. Build word-of-mouth.</p>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <strong>Phase 2: Influencer &amp; Content</strong>
+              <p style="font-size:0.8em; color:#94a3b8; margin-top:0.5rem;">Partner with finance YouTubers, Telegram groups, Twitter/X crypto communities. Educational content marketing.</p>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <strong>Phase 3: Paid Acquisition</strong>
+              <p style="font-size:0.8em; color:#94a3b8; margin-top:0.5rem;">Google Ads, Meta campaigns, app store optimization. Target CAC &lt; ₹800 per active trader.</p>
+            </div>
+            <div class="stat-card fragment fade-up">
+              <strong>Phase 4: B2B Partnerships</strong>
+              <p style="font-size:0.8em; color:#94a3b8; margin-top:0.5rem;">White-label API for fintech apps. Affiliate program for CAs, financial advisors, trading educators.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 9 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">09</div>
+        <h2>The Team</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">Experience that bridges traditional finance and digital assets.</p>
+      </section>
+
+      <!-- SLIDE 18: TEAM -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 09 · Leadership</div>
+          <h2>About us</h2>
+          <div class="two-col">
+            <div>
+              <ul class="check-list">
+                <li class="fragment fade-up"><strong>10+ years</strong> in financial markets — equities, derivatives, commodities, and digital assets</li>
+                <li class="fragment fade-up"><strong>SEBI-registered research professionals</strong> on leadership team</li>
+                <li class="fragment fade-up">Deep expertise in <strong>risk management, investment analysis, and trading strategies</strong></li>
+                <li class="fragment fade-up">Active participants in both <strong>traditional and cryptocurrency markets</strong></li>
+                <li class="fragment fade-up">Technology-driven platform with <strong>compliance-first architecture</strong></li>
+              </ul>
+            </div>
+            <div class="fragment fade-up">
+              <div class="stat-card" style="padding:1.5rem;">
+                <h3 style="margin-top:0;">Our Mission</h3>
+                <p style="font-size:0.9em; color:#cbd5e1;">Bridge the gap between conventional finance and digital assets — delivering a trusted, compliant, and user-friendly trading ecosystem for India.</p>
+                <h3>What We Stand For</h3>
+                <ul class="check-list">
+                  <li>Regulatory integrity</li>
+                  <li>Institutional-grade security</li>
+                  <li>Transparent operations</li>
+                  <li>User empowerment</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 10 -->
+      <section class="chapter-slide" data-background-color="#0f172a">
+        <div class="chapter-number">10</div>
+        <h2>The Ask</h2>
+        <p style="color:#94a3b8; max-width:500px; margin:0 auto;">Partner with us to build India's most trusted trading platform.</p>
+      </section>
+
+      <!-- SLIDE 19: FUNDING -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Chapter 10 · Investment Opportunity</div>
+          <h2>Seed round: ₹10 Crore</h2>
+          <div class="two-col">
+            <div class="chart-box fragment fade-up">
+              <canvas id="fundChart"></canvas>
+            </div>
+            <div class="fragment fade-up">
+              <div class="fund-legend">
+                <div><span class="dot" style="background:#22d3ee;"></span>35% — Licensing &amp; Compliance (₹3.5 Cr)</div>
+                <div><span class="dot" style="background:#3b82f6;"></span>30% — Technology Development (₹3.0 Cr)</div>
+                <div><span class="dot" style="background:#8b5cf6;"></span>20% — Marketing &amp; User Acquisition (₹2.0 Cr)</div>
+                <div><span class="dot" style="background:#10b981;"></span>10% — Banking Integration (₹1.0 Cr)</div>
+                <div><span class="dot" style="background:#fbbf24;"></span>5% — Operations &amp; Legal (₹0.5 Cr)</div>
+              </div>
+              <div class="stat-card" style="margin-top:1.5rem;">
+                <div class="value" style="font-size:1.6em;">18 months</div>
+                <div class="label">Runway to public launch + 6 months of operations</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 20: MILESTONES -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">What Your Investment Unlocks</div>
+          <h2>18-month milestone map</h2>
+          <div class="timeline">
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Month 1–3</div>
+              <div class="title">Compliance</div>
+              <div class="desc">FIU registration, company structuring, legal framework</div>
+            </div>
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Month 4–6</div>
+              <div class="title">Banking</div>
+              <div class="desc">Bank partnerships, payment gateway, whitelisting</div>
+            </div>
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Month 7–9</div>
+              <div class="title">Platform</div>
+              <div class="desc">Core exchange live, wallet integration, security audits</div>
+            </div>
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Month 10–12</div>
+              <div class="title">Beta</div>
+              <div class="desc">1,000-user closed beta, mobile apps, forex module</div>
+            </div>
+            <div class="timeline-item fragment fade-up">
+              <div class="phase">Month 13–18</div>
+              <div class="title">Launch</div>
+              <div class="desc">Public launch, marketing push, 25K users target</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 21: RISKS -->
+      <section>
+        <div class="slide-bg"><div class="gradient-mesh"></div></div>
+        <div class="content-wrap">
+          <div class="eyebrow">Risk Mitigation</div>
+          <h2>We've thought about what could go wrong</h2>
+          <div class="two-col">
+            <div>
+              <table class="compare-table">
+                <thead><tr><th>Risk</th><th>Our Mitigation</th></tr></thead>
+                <tbody>
+                  <tr><td>Regulatory changes</td><td>Compliance-first architecture; legal counsel on retainer</td></tr>
+                  <tr><td>Banking access</td><td>Multiple banking partnerships; escrow structures</td></tr>
+                  <tr><td>Security breach</td><td>Cold storage, audits, insurance, incident response plan</td></tr>
+                  <tr><td>Competition</td><td>Unique bank pay-in/out USP; first-mover in combined crypto+forex</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="fragment fade-up">
+              <div class="stat-card" style="border-color:rgba(16,185,129,0.4);">
+                <p style="margin:0; font-size:0.9em;">Our biggest risk mitigation is <strong style="color:#10b981;">building compliance into the foundation</strong> — not bolting it on later. This is our moat.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 22: VISION -->
+      <section data-autoslide="10000">
+        <div class="slide-bg">
+          <video autoplay muted loop playsinline>
+            <source src="https://cdn.coverr.co/videos/coverr-financial-data-visualization-9764/1080p.mp4" type="video/mp4">
+          </video>
+          <div class="vignette"></div>
+        </div>
+        <div class="content-wrap" style="text-align:center;">
+          <div class="eyebrow fragment fade-up">The Vision</div>
+          <h2 class="fragment fade-up" data-fragment-index="1" style="text-align:center;">Become India's most trusted<br>digital asset gateway</h2>
+          <p class="subtitle fragment fade-up" data-fragment-index="2" style="margin:1.5rem auto 0; text-align:center;">
+            From the first legal bank transfer to the first trade — and every trade after — XchangeByte will be the platform Indians trust with their money.
+          </p>
+        </div>
+      </section>
+
+      <!-- SLIDE 23: CTA -->
+      <section data-background-color="#030712">
+        <div class="slide-bg"><div class="gradient-mesh"></div><div class="grid-overlay"></div></div>
+        <div class="content-wrap" style="text-align:center; padding-top:1rem;">
+          <div class="eyebrow fragment fade-up">Let's Build This Together</div>
+          <h1 class="hero-title fragment fade-up" data-fragment-index="1">XchangeByte</h1>
+          <div class="cta-box fragment fade-up" data-fragment-index="2">
+            <p style="margin:0 0 1rem; font-size:1.1em;">We're raising <strong style="color:#fbbf24;">₹10 Crore</strong> to launch India's first fully compliant crypto &amp; forex platform with legal bank pay-in/out.</p>
+            <p class="contact">📧 contact@xchangebyte.com &nbsp;|&nbsp; 🌐 www.xchangebyte.com</p>
+            <p style="font-size:0.8em; color:#64748b; margin-top:1rem;">This presentation is confidential and intended solely for prospective investors.</p>
+          </div>
+          <p class="fragment fade-up" data-fragment-index="3" style="margin-top:2rem; color:#22d3ee; font-size:1.05em;">
+            <strong>Press → to begin the journey. Press A for auto-play mode.</strong>
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      progress: true,
+      controls: true,
+      center: false,
+      width: 1280,
+      height: 720,
+      margin: 0.08,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      autoSlide: 0,
+      autoSlideStoppable: true,
+      autoSlideMethod: Reveal.navigateNext
+    });
+
+    // Auto-play toggle with 'A' key
+    let autoPlayOn = false;
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'a' || e.key === 'A') {
+        autoPlayOn = !autoPlayOn;
+        Reveal.configure({ autoSlide: autoPlayOn ? 7000 : 0 });
+        document.getElementById('autoplayBadge').classList.toggle('active', autoPlayOn);
+      }
+    });
+
+    // Charts
+    const chartDefaults = {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Inter' } } } },
+      scales: {
+        x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+        y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(148,163,184,0.08)' } }
+      }
+    };
+
+    Reveal.on('slidechanged', initCharts);
+    Reveal.on('ready', initCharts);
+
+    let chartsInitialized = false;
+    function initCharts() {
+      if (chartsInitialized) return;
+      const marketEl = document.getElementById('marketChart');
+      const revenueEl = document.getElementById('revenueChart');
+      const fundEl = document.getElementById('fundChart');
+
+      if (marketEl) {
+        chartsInitialized = true;
+        new Chart(marketEl, {
+          type: 'line',
+          data: {
+            labels: ['2024', '2025', '2026', '2027', '2028'],
+            datasets: [{
+              label: 'India Digital Trading Market (₹ Cr)',
+              data: [4500, 6200, 8900, 12800, 18500],
+              borderColor: '#22d3ee',
+              backgroundColor: 'rgba(34,211,238,0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: chartDefaults
+        });
+      }
+
+      if (revenueEl) {
+        new Chart(revenueEl, {
+          type: 'bar',
+          data: {
+            labels: ['Year 1', 'Year 2', 'Year 3'],
+            datasets: [
+              {
+                label: 'Revenue (₹ Cr)',
+                data: [6.2, 31, 96],
+                backgroundColor: ['rgba(34,211,238,0.7)', 'rgba(59,130,246,0.7)', 'rgba(139,92,246,0.7)'],
+                borderRadius: 8
+              },
+              {
+                label: 'EBITDA (₹ Cr)',
+                data: [0.9, 10.9, 46],
+                backgroundColor: ['rgba(16,185,129,0.5)', 'rgba(16,185,129,0.6)', 'rgba(16,185,129,0.8)'],
+                borderRadius: 8
+              }
+            ]
+          },
+          options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, beginAtZero: true } } }
+        });
+      }
+
+      if (fundEl) {
+        new Chart(fundEl, {
+          type: 'doughnut',
+          data: {
+            labels: ['Compliance 35%', 'Technology 30%', 'Marketing 20%', 'Banking 10%', 'Operations 5%'],
+            datasets: [{
+              data: [35, 30, 20, 10, 5],
+              backgroundColor: ['#22d3ee', '#3b82f6', '#8b5cf6', '#10b981', '#fbbf24'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } } }
+          }
+        });
+      }
+    }
+  </script>
+  <script src="editor.js"></script>
+</body>
+</html>

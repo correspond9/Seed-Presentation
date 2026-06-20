@@ -1,0 +1,35 @@
+Create a 9-min investor pitch video for XchangeByte. Use uploaded logo on title, transitions, and close.
+
+WHAT WE DO: India-compliant crypto and forex platform. USP: legal INR pay-in and pay-out from whitelisted bank accounts via UPI, NEFT, RTGS.
+
+LOOK: Dark premium fintech. Navy-black bg, cyan/purple glow, gold stats. Cinematic, trustworthy. NOT casino crypto style.
+
+VOICE: Human-like female, Indian English, warm confident anchor tone. Natural, not robotic.
+
+MUSIC: Soft ambient electronic, no lyrics.
+
+STORY (animate each beat, max 8 words on screen):
+1. Hook — Indians want crypto but can't legally move bank money in and out.
+2. Title — Logo reveal. Tagline: Precision Trading For The Digital Age.
+3. Stats — $2.5T global market. 10Cr+ Indian users. 1st legal bank pay-in/out.
+4. Problem — 95% can't deposit from whitelisted banks. P2P risk, frozen accounts.
+5. Solution — Bank → Pay-In → Trade → Pay-Out → Bank. Fully compliant.
+6. Opportunity — India top-3 adoption. Crypto + forex on one platform.
+7. Edge — We beat global brokers and Indian exchanges on legal banking.
+8. Trust — FIU-IND, PMLA, AML, PAN/Aadhaar KYC, tax/TDS. 95%+ cold storage.
+9. Tech — Matching engine, multi-chain wallets, banking rails, web + mobile. Beta Q3 2026, launch Q4 2026.
+10. Revenue — Brokerage 60%, spread 25%, subscriptions 15%. 5.6x LTV/CAC.
+11. Projections — Y1 ₹6.2Cr, Y2 ₹31Cr, Y3 ₹96Cr revenue, ₹46Cr EBITDA.
+12. Returns — 8-12x multiple. Break-even 18-24mo. Series A ₹300-500Cr valuation.
+13. Growth — Stealth beta, influencers, paid ads, B2B partnerships.
+14. Team — 10+ years markets. SEBI-registered research leadership.
+15. Ask — ₹10Cr seed. 18-month runway to launch.
+16. Close — India's trusted digital asset gateway. contact@xchangebyte.com www.xchangebyte.com
+
+FOOTAGE: Indian traders on devices, generic payment UI (no real bank logos), trading dashboards, blockchain viz, Indian skylines, office team.
+
+MOTION: Rolling counters, rising charts, particle money flows, chapter cards 01-10, logo on transitions.
+
+FORMAT: 1920x1080, 30fps, MP4, 8-9 min.
+
+AVOID: Real bank/exchange logos, gambling visuals, guaranteed returns, male voice, static shots 4+ sec.

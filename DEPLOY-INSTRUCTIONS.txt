@@ -1,0 +1,78 @@
+HOW TO DEPLOY TO VERCEL VIA GITHUB
+===================================
+
+This project is set up so you and your editor can work on the
+same presentation online. Changes are saved to the cloud and
+both of you see them after clicking "REFRESH LATEST".
+
+
+STEP 1 — PUT THE CODE ON GITHUB
+--------------------------------
+1. Go to https://github.com/new
+2. Create a new repository (name example: XchangeByte-Investor-Pitch)
+3. Keep it Private if you prefer
+4. Do NOT add README or .gitignore (we already have them)
+5. After creating, GitHub shows you commands — use these in
+   your project folder (or ask me to run them):
+
+   git init
+   git add .
+   git commit -m "Initial commit - editable investor pitch"
+   git branch -M main
+   git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
+   git push -u origin main
+
+
+STEP 2 — CONNECT VERCEL TO GITHUB
+----------------------------------
+1. Go to https://vercel.com/new
+2. Click "Import" next to your GitHub repository
+3. Vercel will auto-detect settings — click Deploy
+4. Wait for the first deploy to finish
+
+
+STEP 3 — ENABLE ONLINE SAVING (IMPORTANT!)
+-------------------------------------------
+For Save to work, you need Vercel Blob storage (free tier):
+
+1. Open your project on Vercel dashboard
+2. Go to Storage tab
+3. Click "Create Database" or "Connect Store"
+4. Choose "Blob"
+5. Name it (e.g. pitch-storage) and create it
+6. Connect it to your project when asked
+7. Redeploy: Deployments → three dots → Redeploy
+
+
+STEP 4 — SHARE THE LINK
+------------------------
+Send your editor the Vercel URL, for example:
+https://xchangebyte-investor-pitch.vercel.app
+
+Both of you:
+- Open the same link
+- Edit text on slides
+- Click SAVE CHANGES when done with edits
+- Click REFRESH LATEST to see each other's changes
+
+
+WHEN EDITING IS FINISHED — SWITCH TO VIEW-ONLY
+-----------------------------------------------
+1. Go to Vercel → your project → Settings → Environment Variables
+2. Add a new variable:
+   Name:  EDIT_MODE
+   Value: false
+3. Save and Redeploy
+
+The site will become view-only (no editing toolbar).
+Investors can still view the presentation normally.
+
+
+CURRENT MODE
+------------
+Editable (default) — no EDIT_MODE variable needed yet.
+
+
+NEED HELP?
+----------
+Ask me to run the git commands or help with any step.

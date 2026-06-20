@@ -1,0 +1,16 @@
+{
+  "name": "xchangebyte-investor-pitch",
+  "version": "1.0.0",
+  "description": "XchangeByte investor presentation - editable web deploy",
+  "scripts": {
+    "build": "node build-web.js",
+    "start": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/blob": "^0.27.3",
+    "pptxgenjs": "^4.0.1"
+  }
+}

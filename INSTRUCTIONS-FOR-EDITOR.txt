@@ -1,0 +1,45 @@
+HOW TO EDIT THE XCHANGEBYTE PRESENTATION (ONLINE)
+==================================================
+
+Sufyan will send you a website link (e.g. https://something.vercel.app)
+
+STEP 1 — OPEN THE LINK
+-----------------------
+Click the link Sufyan sends you. It opens in your browser.
+
+
+STEP 2 — VIEW SLIDES
+--------------------
+- Click "Previous" or "Next" at the top
+- OR use the left/right arrow keys on your keyboard
+
+
+STEP 3 — EDIT THE TEXT
+-----------------------
+- Click on any text you want to change
+- Type your changes
+- Move to the next slide and repeat
+
+
+STEP 4 — SAVE YOUR CHANGES
+---------------------------
+- Click the green "SAVE CHANGES" button at the top
+- Wait for the "Saved!" message
+- Your changes are now saved online
+
+
+STEP 5 — SEE EACH OTHER'S CHANGES
+----------------------------------
+- If Sufyan made changes, click "REFRESH LATEST" to load them
+- If you made changes, tell Sufyan to click "REFRESH LATEST" too
+
+
+IMPORTANT
+---------
+- Always click SAVE CHANGES before closing the browser
+- If you don't save, your edits will be lost
+- You do NOT need to download or email any files
+
+NEED HELP?
+----------
+Contact Sufyan.
