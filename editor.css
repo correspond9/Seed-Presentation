@@ -606,6 +606,50 @@ body.drag-mode .inserted-wrap.is-dragging {
   cursor: grabbing;
 }
 
+/* Chart boxes — drag and resize */
+body.edit-mode .chart-box {
+  position: relative;
+}
+
+body.edit-mode .chart-box .chart-resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #22d3ee;
+  border: 1px solid #0f172a;
+  border-radius: 2px;
+  z-index: 25;
+  display: block;
+}
+
+.chart-resize-nw { top: -5px; left: -5px; cursor: nw-resize; }
+.chart-resize-ne { top: -5px; right: -5px; cursor: ne-resize; }
+.chart-resize-sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+.chart-resize-se { bottom: -5px; right: -5px; cursor: se-resize; }
+
+.chart-box.is-resizing {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+}
+
+body.drag-mode .chart-box {
+  cursor: grab;
+}
+
+body.drag-mode .chart-box:active,
+body.drag-mode .chart-box.is-dragging {
+  cursor: grabbing;
+}
+
+body.drag-mode .chart-box.is-positioned {
+  z-index: 24;
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.5);
+}
+
+body.drag-mode .chart-box canvas {
+  pointer-events: none;
+}
+
 #formatToolbar #uploadToLibraryBtn {
   background: #b45309;
   border-color: #b45309;
