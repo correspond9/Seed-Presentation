@@ -73,6 +73,15 @@ const editorBar = `<div id="editorBar">
     <button type="button" id="insertImageBtn" title="Add image or GIF from your computer">+ IMAGE/GIF</button>
     <input type="file" id="insertImageInput" accept="image/*,.gif" hidden>
   </div>
+  <div id="mediaLibraryBar" class="media-library-bar">
+    <div class="media-lib-header">
+      <span class="media-lib-title">My Media Library — upload once, reuse anywhere</span>
+      <button type="button" id="uploadToLibraryBtn">+ Upload to Library</button>
+      <input type="file" id="uploadToLibraryInput" accept="image/*,.gif" hidden>
+      <button type="button" id="toggleMediaBarBtn" class="media-toggle-btn">Hide Media Library</button>
+    </div>
+    <div id="mediaLibraryList" class="media-library-list"></div>
+  </div>
 </div>
 <div class="save-toast" id="saveToast">Saved!</div>
 <div class="scroll-hint">Scroll inside the slide area if content goes below the screen</div>`;
@@ -83,8 +92,9 @@ html = html.replace(
   /    <\/div>\n  <\/div>\n\n  <script src="https:\/\/cdn\.jsdelivr\.net\/npm\/reveal\.js/,
   '    </div>\n  </div>\n</div>\n</div>\n\n  <script src="https://cdn.jsdelivr.net/npm/reveal.js'
 );
+html = html.replace(/<script src="media-library\.js"><\/script>\s*/g, '');
 html = html.replace(/<script src="editor\.js"><\/script>\s*/g, '');
-html = html.replace('</body>', '  <script src="editor.js"></script>\n</body>');
+html = html.replace('</body>', '  <script src="media-library.js"></script>\n  <script src="editor.js"></script>\n</body>');
 
 fs.writeFileSync(outPath, html, 'utf8');
 console.log(`Built ${outPath} for web deployment`);

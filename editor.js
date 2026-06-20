@@ -9,6 +9,23 @@
   let dragOffset = { x: 0, y: 0 };
   let slideZoom = 0.85;
 
+  function setDirty(val) {
+    isDirty = !!val;
+  }
+
+  function exposeEditorApi() {
+    window.__editorApi = {
+      setDirty,
+      getCurrentSlideCanvas,
+      createInsertedWrapper,
+      setupDraggable,
+      buildSlidePreviews,
+      showToast,
+      layoutForEditor,
+    };
+    if (window.__editorMediaInit) window.__editorMediaInit(window.__editorApi);
+  }
+
   function showToast(message, isError) {
     const toast = document.getElementById('saveToast');
     if (!toast) return;
@@ -369,7 +386,11 @@
 
   function insertImageFromFile(file) {
     if (!file) return;
-
+    if (window.__editorMedia && window.__editorMedia.addFileToLibrary) {
+      window.__editorMedia.addFileToLibrary(file, true);
+      return;
+    }
+    // fallback if media-library.js not loaded
     if (!file.type.startsWith('image/')) {
       showToast('Please choose an image or GIF file.', true);
       return;
@@ -471,6 +492,10 @@
 
   function onDragEnd() {
     if (!dragging) return;
+    const section = dragging.closest('section');
+    if (window.__editorMedia && window.__editorMedia.onLogoDragEnd) {
+      window.__editorMedia.onLogoDragEnd(dragging, section);
+    }
     dragging.classList.remove('is-dragging');
     dragging = null;
   }
@@ -543,6 +568,9 @@
       updateSlideCounter();
       updatePreviewSelection();
       disableRevealScaling();
+      if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
+        window.__editorMedia.applyGlobalLogo();
+      }
     });
     Reveal.on('ready', () => {
       updateSlideCounter();
@@ -571,6 +599,10 @@
           slideZoom = data.zoom;
           applySlideZoom();
         }
+        if (window.__editorMedia) {
+          window.__editorMedia.loadSaveData(data);
+          window.__editorMedia.scanHtmlForMedia && window.__editorMedia.scanHtmlForMedia(data.html);
+        }
       }
     }
     if (data.updatedAt) updateLastSaved(data.updatedAt);
@@ -590,10 +622,16 @@
     }
 
     try {
+      const mediaData = window.__editorMedia ? window.__editorMedia.getSaveData() : {};
       const res = await fetch('/api/content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html: slides.innerHTML, zoom: slideZoom }),
+        body: JSON.stringify({
+          html: slides.innerHTML,
+          zoom: slideZoom,
+          mediaLibrary: mediaData.mediaLibrary || [],
+          globalLogo: mediaData.globalLogo || null,
+        }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'Save failed');
@@ -614,6 +652,10 @@
     if (isDirty && !confirm('You have unsaved changes. Refresh anyway and lose them?')) return;
     await loadSavedContent();
     if (isEditable) enableEditing();
+    wrapSlideContent();
+    if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
+      window.__editorMedia.applyGlobalLogo();
+    }
     buildSlidePreviews();
     isDirty = false;
     layoutForEditor();
@@ -635,10 +677,14 @@
     const editorBar = document.getElementById('editorBar');
     if (editorBar) editorBar.style.display = isEditable ? 'block' : 'none';
 
+    exposeEditorApi();
     await loadSavedContent();
 
     if (isEditable) {
       wrapSlideContent();
+      if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
+        window.__editorMedia.applyGlobalLogo();
+      }
       buildSlidePreviews();
       enableEditing();
       bindNavigation();

@@ -22,7 +22,8 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { html, zoom } = await request.json();
+    const body = await request.json();
+    const { html, zoom } = body;
     if (!html || typeof html !== 'string') {
       return Response.json({ ok: false, error: 'Missing slide content' }, { status: 400 });
     }
@@ -30,6 +31,8 @@ export async function POST(request) {
     const payload = {
       html,
       zoom: typeof zoom === 'number' ? zoom : null,
+      mediaLibrary: Array.isArray(body.mediaLibrary) ? body.mediaLibrary : [],
+      globalLogo: body.globalLogo || null,
       updatedAt: new Date().toISOString(),
     };
 
