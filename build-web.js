@@ -43,6 +43,8 @@ const editorBar = `<div id="editorBar">
     <button type="button" id="zoomInBtn" title="Zoom in">+</button>
     <button type="button" id="dragModeBtn">MOVE TEXT: OFF</button>
     <button type="button" id="refreshBtn">REFRESH LATEST</button>
+    <button type="button" id="uploadPptBtn">UPLOAD PPT</button>
+    <input type="file" id="uploadPptInput" accept=".pptx,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint" hidden>
     <button type="button" id="downloadPptBtn">DOWNLOAD PPT</button>
     <span id="lastSaved"></span>
     <button type="button" id="saveBtn">SAVE CHANGES</button>
@@ -80,9 +82,10 @@ html = html.replace(
   /    <\/div>\n  <\/div>\n\n  <script src="https:\/\/cdn\.jsdelivr\.net\/npm\/reveal\.js/,
   '    </div>\n  </div>\n</div>\n</div>\n\n  <script src="https://cdn.jsdelivr.net/npm/reveal.js'
 );
+html = html.replace(/<script src="pptx-import\.js"><\/script>\s*/g, '');
 html = html.replace(/<script src="media-library\.js"><\/script>\s*/g, '');
 html = html.replace(/<script src="editor\.js"><\/script>\s*/g, '');
-html = html.replace('</body>', '  <script src="media-library.js"></script>\n  <script src="editor.js"></script>\n</body>');
+html = html.replace('</body>', '  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>\n  <script src="pptx-import.js"></script>\n  <script src="media-library.js"></script>\n  <script src="editor.js"></script>\n</body>');
 
 fs.writeFileSync(outPath, html, 'utf8');
 console.log(`Built ${outPath} for web deployment`);

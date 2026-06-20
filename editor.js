@@ -230,6 +230,78 @@
     showToast('Jumped to slide ' + num);
   }
 
+  async function uploadPptx(file) {
+    const btn = document.getElementById('uploadPptBtn');
+    const slides = document.querySelector('.slides');
+    if (!slides || !file) return;
+
+    const name = (file.name || '').toLowerCase();
+    if (name.endsWith('.ppt') && !name.endsWith('.pptx')) {
+      showToast('Old .ppt files are not supported. Open the file in PowerPoint and Save As .pptx, then upload again.', true);
+      return;
+    }
+    if (!name.endsWith('.pptx')) {
+      showToast('Please choose a .pptx PowerPoint file.', true);
+      return;
+    }
+    if (file.size > 30 * 1024 * 1024) {
+      showToast('File is too large. Please use a PowerPoint file under 30 MB.', true);
+      return;
+    }
+
+    if (!window.__pptxImport || !window.__pptxImport.convert) {
+      showToast('Upload tool not loaded. Please refresh the page.', true);
+      return;
+    }
+
+    if (!confirm('This will replace ALL current slides with the uploaded PowerPoint.\n\nClick OK to continue, or Cancel to keep your current slides.')) {
+      return;
+    }
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Loading PPT...';
+    }
+
+    try {
+      const buffer = await file.arrayBuffer();
+      const result = await window.__pptxImport.convert(buffer);
+      slides.innerHTML = result.html;
+
+      if (typeof Reveal !== 'undefined') {
+        Reveal.sync();
+        Reveal.slide(0);
+        Reveal.layout();
+      }
+
+      slideZoom = 0.85;
+      applySlideZoom();
+      wrapSlideContent();
+      buildSlidePreviews();
+      disableRevealScaling();
+      updateSlideCounter();
+      layoutForEditor();
+
+      if (window.__editorMedia) {
+        window.__editorMedia.loadSaveData({ mediaLibrary: [], globalLogo: null });
+        if (window.__editorMedia.scanHtmlForMedia) window.__editorMedia.scanHtmlForMedia(result.html);
+      }
+
+      if (isEditable) enableEditing();
+      isDirty = true;
+
+      if (result.title) document.title = result.title;
+      showToast('Loaded ' + result.slideCount + ' slides! Click SAVE CHANGES to keep them online.');
+    } catch (err) {
+      showToast(err.message || 'Could not load that PowerPoint file', true);
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'UPLOAD PPT';
+      }
+    }
+  }
+
   async function downloadPptx() {
     const btn = document.getElementById('downloadPptBtn');
     const slides = document.querySelector('.slides');
@@ -714,6 +786,18 @@
 
       const downloadPptBtn = document.getElementById('downloadPptBtn');
       if (downloadPptBtn) downloadPptBtn.addEventListener('click', downloadPptx);
+
+      const uploadPptBtn = document.getElementById('uploadPptBtn');
+      const uploadPptInput = document.getElementById('uploadPptInput');
+      if (uploadPptBtn && uploadPptInput) {
+        uploadPptBtn.addEventListener('click', () => uploadPptInput.click());
+        uploadPptInput.addEventListener('change', () => {
+          if (uploadPptInput.files && uploadPptInput.files[0]) {
+            uploadPptx(uploadPptInput.files[0]);
+          }
+          uploadPptInput.value = '';
+        });
+      }
 
       const togglePreviewBtn = document.getElementById('togglePreviewBtn');
       if (togglePreviewBtn) togglePreviewBtn.addEventListener('click', togglePreviewPanel);

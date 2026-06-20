@@ -43,6 +43,14 @@ body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
   color: #f8fafc;
 }
 
+#uploadPptBtn {
+  background: #b45309;
+  color: white;
+}
+
+#uploadPptBtn:hover { background: #d97706; }
+#uploadPptBtn:disabled { opacity: 0.6; cursor: wait; }
+
 #downloadPptBtn {
   background: #1d4ed8;
   color: white;
