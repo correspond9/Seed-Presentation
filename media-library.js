@@ -220,12 +220,20 @@
     }
   }
 
+  function updateMediaBarVisibility() {
+    const bar = document.getElementById('mediaLibraryBar');
+    if (!bar) return;
+    const collapsed = document.body.classList.contains('media-bar-collapsed');
+    bar.style.display = mediaLibrary.length && !collapsed ? '' : 'none';
+  }
+
   function renderMediaLibrary() {
     const list = document.getElementById('mediaLibraryList');
     if (!list) return;
 
     if (!mediaLibrary.length) {
-      list.innerHTML = '<p class="media-empty">Upload an image once — then reuse it on any slide or set it as a logo.</p>';
+      list.innerHTML = '';
+      updateMediaBarVisibility();
       return;
     }
 
@@ -292,6 +300,7 @@
       card.appendChild(logoRow);
       list.appendChild(card);
     });
+    updateMediaBarVisibility();
   }
 
   function toggleMediaLibraryBar() {
@@ -299,8 +308,9 @@
     const btn = document.getElementById('toggleMediaBarBtn');
     if (btn) {
       const collapsed = document.body.classList.contains('media-bar-collapsed');
-      btn.textContent = collapsed ? 'Show Media Library' : 'Hide Media Library';
+      btn.textContent = collapsed ? 'Show Media' : 'Hide Media';
     }
+    updateMediaBarVisibility();
     const api = getEditorApi();
     if (api.layoutForEditor) api.layoutForEditor();
   }

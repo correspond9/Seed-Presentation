@@ -11,14 +11,6 @@
 </head>
 <body class="edit-mode">
 <div id="editorBar">
-  <div class="editor-instructions">
-    <strong>Editing mode:</strong>
-    Click text to edit &nbsp;|&nbsp;
-    Turn on <strong>MOVE TEXT</strong> to drag boxes freely &nbsp;|&nbsp;
-    Scroll inside slide if content is long &nbsp;|&nbsp;
-    Use <strong>+ / -</strong> to zoom &nbsp;|&nbsp;
-    <strong>SAVE CHANGES</strong> when done
-  </div>
   <div class="editor-controls">
     <button type="button" id="prevBtn">&larr; Previous</button>
     <span id="slideCounter">Slide 1</span>
@@ -34,7 +26,6 @@
     <button type="button" id="saveBtn">SAVE CHANGES</button>
   </div>
   <div id="formatToolbar">
-    <span class="fmt-label">Format text:</span>
     <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
     <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
     <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
@@ -46,18 +37,15 @@
     <button type="button" data-cmd="alignCenter" title="Align center">Center</button>
     <button type="button" data-cmd="alignRight" title="Align right">Right</button>
     <span class="fmt-sep"></span>
-    <span class="fmt-label">Add content:</span>
     <button type="button" id="insertTextBoxBtn" title="Add a new text box to this slide">+ TEXT BOX</button>
     <button type="button" id="insertImageBtn" title="Add image or GIF from your computer">+ IMAGE/GIF</button>
     <input type="file" id="insertImageInput" accept="image/*,.gif" hidden>
+    <span class="fmt-sep"></span>
+    <button type="button" id="uploadToLibraryBtn" title="Upload image to library for reuse">+ LIBRARY</button>
+    <input type="file" id="uploadToLibraryInput" accept="image/*,.gif" hidden>
+    <button type="button" id="toggleMediaBarBtn" class="media-toggle-btn" title="Show or hide saved media">Hide Media</button>
   </div>
   <div id="mediaLibraryBar" class="media-library-bar">
-    <div class="media-lib-header">
-      <span class="media-lib-title">My Media Library — upload once, reuse anywhere</span>
-      <button type="button" id="uploadToLibraryBtn">+ Upload to Library</button>
-      <input type="file" id="uploadToLibraryInput" accept="image/*,.gif" hidden>
-      <button type="button" id="toggleMediaBarBtn" class="media-toggle-btn">Hide Media Library</button>
-    </div>
     <div id="mediaLibraryList" class="media-library-list"></div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 /* Editor toolbar and edit mode */
 :root {
-  --editor-total-height: 130px;
+  --editor-total-height: 96px;
   --preview-panel-width: 196px;
 }
 
@@ -20,15 +20,6 @@ body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   font-family: Inter, sans-serif;
 }
-
-.editor-instructions {
-  font-size: 12px;
-  color: #cbd5e1;
-  margin-bottom: 6px;
-  line-height: 1.35;
-}
-
-.editor-instructions strong { color: #fbbf24; }
 
 .editor-controls {
   display: flex;
@@ -122,24 +113,15 @@ body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
 #lastSaved { color: #94a3b8; font-weight: 500; min-width: 140px; }
 #zoomLevel { min-width: 50px; text-align: center; }
 
-/* Text formatting toolbar */
+/* Text formatting + media toolbar (single row) */
 #formatToolbar {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-top: 8px;
-  padding-top: 8px;
+  margin-top: 6px;
+  padding-top: 6px;
   border-top: 1px solid rgba(148, 163, 184, 0.2);
   flex-wrap: wrap;
-}
-
-#formatToolbar .fmt-label {
-  font-size: 11px;
-  color: #94a3b8;
-  margin-right: 6px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 #formatToolbar button {
@@ -586,57 +568,27 @@ body.drag-mode .inserted-wrap.is-dragging {
   cursor: grabbing;
 }
 
-/* Media library bar */
-.media-library-bar {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-body.media-bar-collapsed .media-library-list,
-body.media-bar-collapsed .media-lib-header .media-lib-title,
-body.media-bar-collapsed .media-lib-header #uploadToLibraryBtn {
-  display: none;
-}
-
-.media-lib-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
-.media-lib-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  flex: 1;
-}
-
-#uploadToLibraryBtn {
+#formatToolbar #uploadToLibraryBtn {
   background: #b45309;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
+  border-color: #b45309;
 }
 
-#uploadToLibraryBtn:hover { background: #d97706; }
+#formatToolbar #uploadToLibraryBtn:hover {
+  background: #d97706;
+  border-color: #d97706;
+}
 
-.media-toggle-btn {
+#formatToolbar .media-toggle-btn {
   background: #334155;
-  color: #f8fafc;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 12px;
-  cursor: pointer;
+}
+
+/* Media library list (below toolbar row) */
+.media-library-bar {
+  margin-top: 6px;
+}
+
+body.media-bar-collapsed .media-library-bar {
+  display: none;
 }
 
 .media-library-list {
@@ -645,12 +597,6 @@ body.media-bar-collapsed .media-lib-header #uploadToLibraryBtn {
   overflow-x: auto;
   padding-bottom: 6px;
   scrollbar-width: thin;
-}
-
-.media-empty {
-  font-size: 12px;
-  color: #64748b;
-  margin: 0;
 }
 
 .media-card {
