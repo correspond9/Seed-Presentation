@@ -49,6 +49,15 @@
 </div>
 <div class="save-toast" id="saveToast">Saved!</div>
 <div class="scroll-hint">Scroll inside the slide area if content goes below the screen</div>
+<div id="editorLayout" class="editor-layout">
+<aside id="slidePreviewPanel" class="slide-preview-panel">
+  <div class="preview-header">
+    <span class="preview-title">Slides</span>
+    <button type="button" id="togglePreviewBtn" class="preview-toggle-btn" title="Hide slide list">&lsaquo;</button>
+  </div>
+  <div id="slidePreviewList" class="preview-list"></div>
+</aside>
+<div class="editor-stage">
   <div class="reveal">
     <div class="slides">
 
@@ -804,6 +813,8 @@
 
     </div>
   </div>
+</div>
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>

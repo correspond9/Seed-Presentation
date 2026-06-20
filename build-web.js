@@ -22,6 +22,16 @@ if (!html.includes('editor.css')) {
   );
 }
 
+const previewPanel = `<div id="editorLayout" class="editor-layout">
+<aside id="slidePreviewPanel" class="slide-preview-panel">
+  <div class="preview-header">
+    <span class="preview-title">Slides</span>
+    <button type="button" id="togglePreviewBtn" class="preview-toggle-btn" title="Hide slide list">&lsaquo;</button>
+  </div>
+  <div id="slidePreviewList" class="preview-list"></div>
+</aside>
+<div class="editor-stage">`;
+
 const editorBar = `<div id="editorBar">
   <div class="editor-instructions">
     <strong>Editing mode:</strong>
@@ -63,7 +73,11 @@ const editorBar = `<div id="editorBar">
 <div class="scroll-hint">Scroll inside the slide area if content goes below the screen</div>`;
 
 // Strip any previous editor injection before re-adding
-html = html.replace(/<body[^>]*>[\s\S]*?<div class="reveal">/, '<body class="edit-mode">\n' + editorBar + '\n  <div class="reveal">');
+html = html.replace(/<body[^>]*>[\s\S]*?<div class="reveal">/, '<body class="edit-mode">\n' + editorBar + '\n' + previewPanel + '\n  <div class="reveal">');
+html = html.replace(
+  /    <\/div>\n  <\/div>\n\n  <script src="https:\/\/cdn\.jsdelivr\.net\/npm\/reveal\.js/,
+  '    </div>\n  </div>\n</div>\n</div>\n\n  <script src="https://cdn.jsdelivr.net/npm/reveal.js'
+);
 html = html.replace(/<script src="editor\.js"><\/script>\s*/g, '');
 html = html.replace('</body>', '  <script src="editor.js"></script>\n</body>');
 

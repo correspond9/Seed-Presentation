@@ -32,6 +32,80 @@
     return document.querySelectorAll('.reveal .slides > section').length;
   }
 
+  function getSlideTitle(section) {
+    const h = section.querySelector('h1,h2,h3,.chapter-number');
+    if (h) return (h.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+    const p = section.querySelector('p');
+    if (p) return (p.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40);
+    return 'Slide';
+  }
+
+  function buildSlidePreviews() {
+    const list = document.getElementById('slidePreviewList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    const sections = document.querySelectorAll('.reveal .slides > section');
+    sections.forEach((section, i) => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'preview-item';
+      item.dataset.index = String(i);
+      item.title = 'Slide ' + (i + 1) + ': ' + getSlideTitle(section);
+
+      const num = document.createElement('span');
+      num.className = 'preview-num';
+      num.textContent = String(i + 1);
+
+      const thumb = document.createElement('div');
+      thumb.className = 'preview-thumb';
+
+      const inner = document.createElement('div');
+      inner.className = 'preview-thumb-inner';
+
+      const zoomWrap = section.querySelector(':scope > .slide-zoom-wrap');
+      const source = zoomWrap ? zoomWrap.cloneNode(true) : section.cloneNode(true);
+      source.querySelectorAll('video, canvas, script').forEach((el) => el.remove());
+      inner.appendChild(source);
+      thumb.appendChild(inner);
+
+      item.appendChild(num);
+      item.appendChild(thumb);
+      item.addEventListener('click', () => {
+        if (typeof Reveal === 'undefined') return;
+        Reveal.slide(i);
+        updateSlideCounter();
+        updatePreviewSelection();
+        disableRevealScaling();
+      });
+
+      list.appendChild(item);
+    });
+
+    updatePreviewSelection();
+  }
+
+  function updatePreviewSelection() {
+    if (typeof Reveal === 'undefined') return;
+    const idx = Reveal.getIndices().h;
+    document.querySelectorAll('.preview-item').forEach((item, i) => {
+      const active = i === idx;
+      item.classList.toggle('active', active);
+      if (active) item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  }
+
+  function togglePreviewPanel() {
+    document.body.classList.toggle('preview-collapsed');
+    const btn = document.getElementById('togglePreviewBtn');
+    const collapsed = document.body.classList.contains('preview-collapsed');
+    if (btn) {
+      btn.textContent = collapsed ? '\u203A' : '\u2039';
+      btn.title = collapsed ? 'Show slide list' : 'Hide slide list';
+    }
+    layoutForEditor();
+  }
+
   function layoutForEditor() {
     const bar = document.getElementById('editorBar');
     if (!bar) return;
@@ -134,6 +208,7 @@
     }
     Reveal.slide(num - 1);
     updateSlideCounter();
+    updatePreviewSelection();
     disableRevealScaling();
     showToast('Jumped to slide ' + num);
   }
@@ -306,12 +381,14 @@
     if (nextBtn) nextBtn.addEventListener('click', () => Reveal.next());
     Reveal.on('slidechanged', () => {
       updateSlideCounter();
+      updatePreviewSelection();
       disableRevealScaling();
     });
     Reveal.on('ready', () => {
       updateSlideCounter();
       layoutForEditor();
       wrapSlideContent();
+      buildSlidePreviews();
       disableRevealScaling();
     });
     setTimeout(updateSlideCounter, 200);
@@ -329,6 +406,7 @@
           Reveal.layout();
         }
         wrapSlideContent();
+        buildSlidePreviews();
         if (data.zoom) {
           slideZoom = data.zoom;
           applySlideZoom();
@@ -376,6 +454,7 @@
     if (isDirty && !confirm('You have unsaved changes. Refresh anyway and lose them?')) return;
     await loadSavedContent();
     if (isEditable) enableEditing();
+    buildSlidePreviews();
     isDirty = false;
     layoutForEditor();
     showToast('Loaded the latest saved version.');
@@ -400,6 +479,7 @@
 
     if (isEditable) {
       wrapSlideContent();
+      buildSlidePreviews();
       enableEditing();
       bindNavigation();
       bindFormatToolbar();
@@ -428,6 +508,9 @@
 
       const downloadPptBtn = document.getElementById('downloadPptBtn');
       if (downloadPptBtn) downloadPptBtn.addEventListener('click', downloadPptx);
+
+      const togglePreviewBtn = document.getElementById('togglePreviewBtn');
+      if (togglePreviewBtn) togglePreviewBtn.addEventListener('click', togglePreviewPanel);
 
       const zoomInBtn = document.getElementById('zoomInBtn');
       const zoomOutBtn = document.getElementById('zoomOutBtn');
