@@ -46,13 +46,47 @@ body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
   font-family: Inter, sans-serif;
 }
 
-#prevBtn, #nextBtn, #refreshBtn, #zoomOutBtn, #zoomInBtn {
+#prevBtn, #nextBtn, #refreshBtn, #zoomOutBtn, #zoomInBtn, #jumpBtn {
   background: #334155;
   color: #f8fafc;
 }
 
-#prevBtn:hover, #nextBtn:hover, #refreshBtn:hover, #zoomOutBtn:hover, #zoomInBtn:hover {
+#downloadPptBtn {
+  background: #1d4ed8;
+  color: white;
+}
+
+#downloadPptBtn:hover { background: #2563eb; }
+#downloadPptBtn:disabled { opacity: 0.6; cursor: wait; }
+
+#prevBtn:hover, #nextBtn:hover, #refreshBtn:hover, #zoomOutBtn:hover, #zoomInBtn:hover, #jumpBtn:hover {
   background: #475569;
+}
+
+.jump-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.jump-wrap input {
+  width: 52px;
+  padding: 6px 8px;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #f8fafc;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.jump-wrap input:focus {
+  outline: none;
+  border-color: #22d3ee;
 }
 
 #dragModeBtn {

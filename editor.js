@@ -123,6 +123,63 @@
     isDirty = true;
   }
 
+  function jumpToSlide() {
+    const input = document.getElementById('jumpToSlide');
+    if (!input || typeof Reveal === 'undefined') return;
+    const total = getSlideCount();
+    const num = parseInt(input.value, 10);
+    if (isNaN(num) || num < 1 || num > total) {
+      showToast('Enter a slide number between 1 and ' + total, true);
+      return;
+    }
+    Reveal.slide(num - 1);
+    updateSlideCounter();
+    disableRevealScaling();
+    showToast('Jumped to slide ' + num);
+  }
+
+  async function downloadPptx() {
+    const btn = document.getElementById('downloadPptBtn');
+    const slides = document.querySelector('.slides');
+    if (!slides) return;
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Creating PPT...';
+    }
+
+    try {
+      const res = await fetch('/api/export-pptx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ html: slides.innerHTML }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Download failed');
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'XchangeByte-Investor-Pitch.pptx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('PowerPoint file downloaded to your PC!');
+    } catch (err) {
+      showToast(err.message || 'Could not create PowerPoint file', true);
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'DOWNLOAD PPT';
+      }
+    }
+  }
+
   function toggleDragMode() {
     dragMode = !dragMode;
     document.body.classList.toggle('drag-mode', dragMode);
@@ -359,6 +416,18 @@
 
       const dragBtn = document.getElementById('dragModeBtn');
       if (dragBtn) dragBtn.addEventListener('click', toggleDragMode);
+
+      const jumpBtn = document.getElementById('jumpBtn');
+      const jumpInput = document.getElementById('jumpToSlide');
+      if (jumpBtn) jumpBtn.addEventListener('click', jumpToSlide);
+      if (jumpInput) {
+        jumpInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') jumpToSlide();
+        });
+      }
+
+      const downloadPptBtn = document.getElementById('downloadPptBtn');
+      if (downloadPptBtn) downloadPptBtn.addEventListener('click', downloadPptx);
 
       const zoomInBtn = document.getElementById('zoomInBtn');
       const zoomOutBtn = document.getElementById('zoomOutBtn');
