@@ -25,10 +25,10 @@ if (!html.includes('editor.css')) {
 const editorBar = `<div id="editorBar">
   <div class="editor-instructions">
     <strong>Editing mode:</strong>
-    Click any text to change it &nbsp;|&nbsp;
-    Use arrow keys or buttons to move between slides &nbsp;|&nbsp;
-    Click <strong>SAVE CHANGES</strong> so everyone sees your updates &nbsp;|&nbsp;
-    Click <strong>REFRESH LATEST</strong> to load changes made by others
+    Click any text to edit &nbsp;|&nbsp;
+    Use formatting buttons below &nbsp;|&nbsp;
+    <strong>SAVE CHANGES</strong> when done &nbsp;|&nbsp;
+    <strong>REFRESH LATEST</strong> to see others' edits
   </div>
   <div class="editor-controls">
     <button type="button" id="prevBtn">&larr; Previous</button>
@@ -37,6 +37,19 @@ const editorBar = `<div id="editorBar">
     <button type="button" id="refreshBtn">REFRESH LATEST</button>
     <span id="lastSaved"></span>
     <button type="button" id="saveBtn">SAVE CHANGES</button>
+  </div>
+  <div id="formatToolbar">
+    <span class="fmt-label">Format selected text:</span>
+    <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+    <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
+    <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+    <span class="fmt-sep"></span>
+    <button type="button" data-cmd="fontSizeDown" title="Smaller text">A&minus;</button>
+    <button type="button" data-cmd="fontSizeUp" title="Larger text">A+</button>
+    <span class="fmt-sep"></span>
+    <button type="button" data-cmd="alignLeft" title="Align left">Left</button>
+    <button type="button" data-cmd="alignCenter" title="Align center">Center</button>
+    <button type="button" data-cmd="alignRight" title="Align right">Right</button>
   </div>
 </div>
 <div class="save-toast" id="saveToast">Saved!</div>`;

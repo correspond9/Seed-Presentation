@@ -1,7 +1,11 @@
 /* Editor toolbar and edit mode */
-body.edit-mode { padding-top: 96px; }
+:root {
+  --editor-total-height: 130px;
+}
+
+body.edit-mode { padding-top: 0; overflow: hidden; }
 body.edit-mode .fragment.fade-up { opacity: 1 !important; transform: none !important; }
-body.view-mode .reveal { height: 100vh !important; }
+body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
 
 #editorBar {
   position: fixed;
@@ -11,16 +15,16 @@ body.view-mode .reveal { height: 100vh !important; }
   z-index: 9999;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   border-bottom: 2px solid #22d3ee;
-  padding: 10px 20px;
+  padding: 8px 16px 10px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   font-family: Inter, sans-serif;
 }
 
 .editor-instructions {
-  font-size: 13px;
+  font-size: 12px;
   color: #cbd5e1;
-  margin-bottom: 8px;
-  line-height: 1.4;
+  margin-bottom: 6px;
+  line-height: 1.35;
 }
 
 .editor-instructions strong { color: #fbbf24; }
@@ -28,15 +32,15 @@ body.view-mode .reveal { height: 100vh !important; }
 .editor-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .editor-controls button {
-  padding: 8px 18px;
+  padding: 7px 14px;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   font-family: Inter, sans-serif;
@@ -55,8 +59,8 @@ body.view-mode .reveal { height: 100vh !important; }
   background: linear-gradient(135deg, #10b981, #059669);
   color: white;
   margin-left: auto;
-  font-size: 15px;
-  padding: 10px 24px;
+  font-size: 14px;
+  padding: 8px 20px;
   box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
 }
 
@@ -66,10 +70,104 @@ body.view-mode .reveal { height: 100vh !important; }
 #slideCounter, #lastSaved {
   color: #22d3ee;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
 }
 
-#lastSaved { color: #94a3b8; font-weight: 500; min-width: 180px; }
+#lastSaved { color: #94a3b8; font-weight: 500; min-width: 160px; }
+
+/* Text formatting toolbar */
+#formatToolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  flex-wrap: wrap;
+}
+
+#formatToolbar .fmt-label {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-right: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#formatToolbar button {
+  padding: 5px 10px;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  background: #1e293b;
+  color: #f8fafc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 32px;
+}
+
+#formatToolbar button:hover {
+  background: #334155;
+  border-color: #22d3ee;
+}
+
+#formatToolbar button.active {
+  background: #0e7490;
+  border-color: #22d3ee;
+}
+
+#formatToolbar .fmt-sep {
+  width: 1px;
+  height: 22px;
+  background: #475569;
+  margin: 0 4px;
+}
+
+/* Reveal layout fix for editor bar */
+body.edit-mode .reveal {
+  position: fixed !important;
+  top: var(--editor-total-height) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: calc(100vh - var(--editor-total-height)) !important;
+  margin: 0 !important;
+}
+
+body.edit-mode .reveal .slides {
+  text-align: left;
+}
+
+/* Fit content — scroll inside slide if needed */
+body.edit-mode .reveal .slides > section {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: 100% !important;
+  padding: 0.5rem 1rem 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+body.edit-mode .reveal .slides > section::-webkit-scrollbar {
+  width: 6px;
+}
+
+body.edit-mode .reveal .slides > section::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.4);
+  border-radius: 3px;
+}
+
+/* Slightly smaller text in edit mode so everything fits better */
+body.edit-mode .reveal h1 { font-size: 2.2em !important; line-height: 1.1 !important; }
+body.edit-mode .reveal h2 { font-size: 1.65em !important; margin-bottom: 0.4em !important; }
+body.edit-mode .reveal h3 { font-size: 1.15em !important; }
+body.edit-mode .reveal p,
+body.edit-mode .reveal li { font-size: 0.82em !important; line-height: 1.45 !important; }
+body.edit-mode .reveal .subtitle { font-size: 1em !important; }
+body.edit-mode .reveal .content-wrap { padding: 0.75rem 1.25rem !important; max-width: 100% !important; }
+body.edit-mode .reveal .stat-card .value { font-size: 1.5em !important; }
+body.edit-mode .reveal .chapter-number { font-size: 3.5em !important; }
+body.edit-mode .reveal .hero-title { font-size: 2.4em !important; }
 
 [contenteditable="true"] {
   outline: none;
@@ -107,5 +205,3 @@ body.view-mode .reveal { height: 100vh !important; }
 
 .save-toast.show { opacity: 1; transform: translateY(0); }
 .save-toast.error { background: #ef4444; }
-
-.reveal { height: calc(100vh - 96px) !important; }

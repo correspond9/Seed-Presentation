@@ -27,6 +27,108 @@
     lastKnownUpdate = iso;
   }
 
+  function getSlideCount() {
+    return document.querySelectorAll('.reveal .slides > section').length;
+  }
+
+  function layoutForEditor() {
+    const bar = document.getElementById('editorBar');
+    if (!bar) return;
+    const h = bar.offsetHeight;
+    document.documentElement.style.setProperty('--editor-total-height', h + 'px');
+    if (typeof Reveal !== 'undefined') {
+      Reveal.configure({ margin: 0.02, width: 1280, height: 720 });
+      Reveal.layout();
+    }
+  }
+
+  function getActiveEditable() {
+    const active = document.activeElement;
+    if (active && active.getAttribute('contenteditable') === 'true') return active;
+    const sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return null;
+    let node = sel.anchorNode;
+    if (node && node.nodeType === 3) node = node.parentElement;
+    if (node && node.closest) {
+      const editable = node.closest('[contenteditable="true"]');
+      if (editable) return editable;
+    }
+    return null;
+  }
+
+  function execFormat(command, value) {
+    const el = getActiveEditable();
+    if (!el) {
+      showToast('Click on text first, then use the formatting buttons.', true);
+      return;
+    }
+    el.focus();
+    document.execCommand(command, false, value || null);
+    isDirty = true;
+  }
+
+  function changeFontSize(delta) {
+    const el = getActiveEditable();
+    if (!el) {
+      showToast('Click on text first, then use A+ or A-.', true);
+      return;
+    }
+    const current = parseFloat(window.getComputedStyle(el).fontSize) || 16;
+    const next = Math.max(10, Math.min(52, current + delta));
+    el.style.fontSize = next + 'px';
+    isDirty = true;
+  }
+
+  function setAlignment(align) {
+    const el = getActiveEditable();
+    if (!el) {
+      showToast('Click on text first, then choose alignment.', true);
+      return;
+    }
+    el.style.textAlign = align;
+    isDirty = true;
+  }
+
+  function bindFormatToolbar() {
+    const toolbar = document.getElementById('formatToolbar');
+    if (!toolbar) return;
+
+    toolbar.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-cmd]');
+      if (!btn) return;
+      const cmd = btn.dataset.cmd;
+
+      switch (cmd) {
+        case 'bold':
+          execFormat('bold');
+          break;
+        case 'italic':
+          execFormat('italic');
+          break;
+        case 'underline':
+          execFormat('underline');
+          break;
+        case 'fontSizeUp':
+          changeFontSize(2);
+          break;
+        case 'fontSizeDown':
+          changeFontSize(-2);
+          break;
+        case 'alignLeft':
+          setAlignment('left');
+          break;
+        case 'alignCenter':
+          setAlignment('center');
+          break;
+        case 'alignRight':
+          setAlignment('right');
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
   function enableEditing() {
     document.querySelectorAll(editableSelectors).forEach((el) => {
       if (el.closest('#editorBar') || el.closest('script') || el.closest('canvas')) return;
@@ -55,7 +157,7 @@
     const counter = document.getElementById('slideCounter');
     if (!counter || typeof Reveal === 'undefined') return;
     const idx = Reveal.getIndices().h + 1;
-    const total = Reveal.getTotalSlides();
+    const total = getSlideCount();
     counter.textContent = 'Slide ' + idx + ' of ' + total;
   }
 
@@ -65,7 +167,10 @@
     if (prevBtn) prevBtn.addEventListener('click', () => Reveal.prev());
     if (nextBtn) nextBtn.addEventListener('click', () => Reveal.next());
     Reveal.on('slidechanged', updateSlideCounter);
-    Reveal.on('ready', updateSlideCounter);
+    Reveal.on('ready', () => {
+      updateSlideCounter();
+      layoutForEditor();
+    });
     setTimeout(updateSlideCounter, 200);
   }
 
@@ -128,6 +233,7 @@
     await loadSavedContent();
     if (isEditable) enableEditing();
     isDirty = false;
+    layoutForEditor();
     showToast('Loaded the latest saved version.');
   }
 
@@ -153,6 +259,9 @@
     if (isEditable) {
       enableEditing();
       bindNavigation();
+      bindFormatToolbar();
+      layoutForEditor();
+      window.addEventListener('resize', layoutForEditor);
 
       const saveBtn = document.getElementById('saveBtn');
       if (saveBtn) saveBtn.addEventListener('click', saveContent);
