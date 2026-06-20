@@ -1,7 +1,4 @@
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
-const { htmlToPptxBuffer } = require('../lib/pptx-export.js');
+import { htmlToPptxBuffer } from '../lib/pptx-export.js';
 
 export async function POST(request) {
   try {
@@ -23,6 +20,7 @@ export async function POST(request) {
     });
   } catch (err) {
     console.error('PPTX export error:', err);
-    return Response.json({ ok: false, error: 'Could not create PowerPoint file' }, { status: 500 });
+    const message = err && err.message ? err.message : 'Could not create PowerPoint file';
+    return Response.json({ ok: false, error: message }, { status: 500 });
   }
 }

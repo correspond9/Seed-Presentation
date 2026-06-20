@@ -7,6 +7,9 @@
     "api/content.js": {
       "maxDuration": 30,
       "memory": 1024
+    },
+    "api/export-pptx.js": {
+      "maxDuration": 60
     }
   },
   "rewrites": [
