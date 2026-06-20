@@ -10,6 +10,7 @@
   let slideZoom = 0.85;
   const dragHandlers = new WeakMap();
   const inputHandlers = new WeakMap();
+  let resizingChart = null;
 
   function setDirty(val) {
     isDirty = !!val;
@@ -179,8 +180,8 @@
       el.removeAttribute('data-input-bound');
       el.removeAttribute('data-bound');
     });
-    clone.querySelectorAll('.is-dragging,.is-positioned').forEach((el) => {
-      el.classList.remove('is-dragging', 'is-positioned');
+    clone.querySelectorAll('.is-dragging,.is-positioned,.is-resizing').forEach((el) => {
+      el.classList.remove('is-dragging', 'is-positioned', 'is-resizing');
     });
     return clone.innerHTML;
   }
@@ -441,6 +442,116 @@
     el.addEventListener('mousedown', onDragStart);
   }
 
+  function resizeChartsInBox(box) {
+    if (typeof Chart === 'undefined' || !box) return;
+    box.querySelectorAll('canvas').forEach((canvas) => {
+      const chart = Chart.getChart(canvas);
+      if (chart) chart.resize();
+    });
+  }
+
+  function ensureChartResizeHandles(box) {
+    if (box.querySelector('.chart-resize-handle')) return;
+    ['nw', 'ne', 'sw', 'se'].forEach((corner) => {
+      const handle = document.createElement('span');
+      handle.className = 'chart-resize-handle chart-resize-' + corner;
+      handle.dataset.corner = corner;
+      handle.title = 'Drag to resize chart';
+      handle.addEventListener('mousedown', (e) => onChartResizeStart(e, box, corner));
+      box.appendChild(handle);
+    });
+  }
+
+  function onChartResizeStart(e, box, corner) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const parent = getPositionParent(box);
+    if (!parent) return;
+
+    const rect = box.getBoundingClientRect();
+    resizingChart = {
+      box,
+      corner,
+      startX: e.clientX,
+      startY: e.clientY,
+      startWidth: rect.width / slideZoom,
+      startHeight: rect.height / slideZoom,
+      startLeft: parseFloat(box.style.left),
+      startTop: parseFloat(box.style.top),
+      hadPosition: box.classList.contains('is-positioned'),
+    };
+
+    document.addEventListener('mousemove', onChartResizeMove);
+    document.addEventListener('mouseup', onChartResizeEnd);
+    box.classList.add('is-resizing');
+  }
+
+  function onChartResizeMove(e) {
+    if (!resizingChart) return;
+    e.preventDefault();
+
+    const { box, corner, startX, startY, startWidth, startHeight, startLeft, startTop, hadPosition } = resizingChart;
+    const deltaX = (e.clientX - startX) / slideZoom;
+    const deltaY = (e.clientY - startY) / slideZoom;
+    let newWidth = startWidth;
+    let newHeight = startHeight;
+
+    if (corner === 'se' || corner === 'ne') newWidth = startWidth + deltaX;
+    else newWidth = startWidth - deltaX;
+
+    if (corner === 'se' || corner === 'sw') newHeight = startHeight + deltaY;
+    else newHeight = startHeight - deltaY;
+
+    newWidth = Math.max(160, Math.min(920, Math.round(newWidth)));
+    newHeight = Math.max(120, Math.min(520, Math.round(newHeight)));
+
+    box.style.width = newWidth + 'px';
+    box.style.height = newHeight + 'px';
+    box.style.boxSizing = 'border-box';
+
+    if (hadPosition) {
+      if ((corner === 'nw' || corner === 'sw') && !isNaN(startLeft)) {
+        box.style.left = (startLeft + (startWidth - newWidth)) + 'px';
+      }
+      if ((corner === 'nw' || corner === 'ne') && !isNaN(startTop)) {
+        box.style.top = (startTop + (startHeight - newHeight)) + 'px';
+      }
+    }
+
+    const canvas = box.querySelector('canvas');
+    if (canvas) {
+      canvas.style.width = '100%';
+      canvas.style.maxHeight = '100%';
+    }
+
+    resizeChartsInBox(box);
+    isDirty = true;
+  }
+
+  function onChartResizeEnd() {
+    if (!resizingChart) return;
+    resizingChart.box.classList.remove('is-resizing');
+    resizeChartsInBox(resizingChart.box);
+    resizingChart = null;
+    document.removeEventListener('mousemove', onChartResizeMove);
+    document.removeEventListener('mouseup', onChartResizeEnd);
+    isDirty = true;
+  }
+
+  function setupChartBox(box) {
+    box.style.position = box.style.position || 'relative';
+    ensureChartResizeHandles(box);
+    setupDraggable(box);
+  }
+
+  function enableChartBoxes() {
+    document.querySelectorAll('.reveal .slides .chart-box').forEach((box) => {
+      if (box.closest('#editorBar')) return;
+      setupChartBox(box);
+    });
+  }
+
   function setupInsertedTextbox(box) {
     box.setAttribute('contenteditable', 'true');
     box.setAttribute('spellcheck', 'true');
@@ -569,8 +680,8 @@
     }
     showToast(
       dragMode
-        ? 'Move mode ON — drag any text box freely. Turn off to edit words.'
-        : 'Move mode OFF — click text to edit words.'
+        ? 'Move mode ON — drag text, charts, or images freely. Turn off to edit words.'
+        : 'Move mode OFF — click text to edit words. Chart corners still resize.'
     );
   }
 
@@ -581,7 +692,7 @@
 
   function onDragStart(e) {
     if (!dragMode) return;
-    if (e.target.closest('.remove-inserted-btn, .remove-logo-btn, .logo-resize-handle')) return;
+    if (e.target.closest('.remove-inserted-btn, .remove-logo-btn, .logo-resize-handle, .chart-resize-handle')) return;
     e.preventDefault();
     e.stopPropagation();
 
@@ -670,6 +781,7 @@
       setupDraggable(el);
     });
     enableInsertedElements();
+    enableChartBoxes();
   }
 
   function disableEditing() {
