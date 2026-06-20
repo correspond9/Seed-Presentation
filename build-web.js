@@ -83,8 +83,15 @@ html = html.replace(
   '    </div>\n  </div>\n</div>\n</div>\n\n  <script src="https://cdn.jsdelivr.net/npm/reveal.js'
 );
 html = html.replace(/<script src="pptx-import\.js"><\/script>\s*/g, '');
+html = html.replace(/<script src="presentation-charts\.js"><\/script>\s*/g, '');
 html = html.replace(/<script src="media-library\.js"><\/script>\s*/g, '');
 html = html.replace(/<script src="editor\.js"><\/script>\s*/g, '');
+if (!html.includes('presentation-charts.js')) {
+  html = html.replace(
+    '<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>',
+    '<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>\n  <script src="presentation-charts.js"></script>'
+  );
+}
 html = html.replace('</body>', '  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>\n  <script src="pptx-import.js"></script>\n  <script src="media-library.js"></script>\n  <script src="editor.js"></script>\n</body>');
 
 fs.writeFileSync(outPath, html, 'utf8');

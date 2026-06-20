@@ -8,6 +8,8 @@
   let dragging = null;
   let dragOffset = { x: 0, y: 0 };
   let slideZoom = 0.85;
+  const dragHandlers = new WeakMap();
+  const inputHandlers = new WeakMap();
 
   function setDirty(val) {
     isDirty = !!val;
@@ -122,6 +124,62 @@
       btn.title = collapsed ? 'Show slide list' : 'Hide slide list';
     }
     layoutForEditor();
+  }
+
+  function resetEditorBindings() {
+    document.querySelectorAll('[data-drag-bound]').forEach((el) => {
+      const handler = dragHandlers.get(el);
+      if (handler) el.removeEventListener('mousedown', handler);
+      dragHandlers.delete(el);
+      delete el.dataset.dragBound;
+    });
+    document.querySelectorAll('[data-input-bound]').forEach((el) => {
+      const handler = inputHandlers.get(el);
+      if (handler) el.removeEventListener('input', handler);
+      inputHandlers.delete(el);
+      delete el.dataset.inputBound;
+    });
+    document.querySelectorAll('[data-bound]').forEach((el) => {
+      delete el.dataset.bound;
+    });
+  }
+
+  function bindInputTracking(el) {
+    const existing = inputHandlers.get(el);
+    if (existing) el.removeEventListener('input', existing);
+    const handler = () => { isDirty = true; };
+    inputHandlers.set(el, handler);
+    el.dataset.inputBound = '1';
+    el.addEventListener('input', handler);
+  }
+
+  function refreshEditorAfterContentChange() {
+    resetEditorBindings();
+    wrapSlideContent();
+    buildSlidePreviews();
+    disableRevealScaling();
+    updateSlideCounter();
+    if (window.initPresentationCharts) window.initPresentationCharts(true);
+    if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
+      window.__editorMedia.applyGlobalLogo();
+    }
+    if (isEditable) enableEditing();
+    layoutForEditor();
+  }
+
+  function getSlidesHtmlForSave() {
+    const slides = document.querySelector('.slides');
+    if (!slides) return '';
+    const clone = slides.cloneNode(true);
+    clone.querySelectorAll('[data-drag-bound],[data-input-bound],[data-bound]').forEach((el) => {
+      el.removeAttribute('data-drag-bound');
+      el.removeAttribute('data-input-bound');
+      el.removeAttribute('data-bound');
+    });
+    clone.querySelectorAll('.is-dragging,.is-positioned').forEach((el) => {
+      el.classList.remove('is-dragging', 'is-positioned');
+    });
+    return clone.innerHTML;
   }
 
   function layoutForEditor() {
@@ -276,22 +334,15 @@
       }
 
       slideZoom = 0.85;
-      applySlideZoom();
-      wrapSlideContent();
-      buildSlidePreviews();
-      disableRevealScaling();
-      updateSlideCounter();
-      layoutForEditor();
 
       if (window.__editorMedia) {
         window.__editorMedia.loadSaveData({ mediaLibrary: [], globalLogo: null });
         if (window.__editorMedia.scanHtmlForMedia) window.__editorMedia.scanHtmlForMedia(result.html);
       }
 
-      if (isEditable) enableEditing();
-      isDirty = true;
-
       if (result.title) document.title = result.title;
+      refreshEditorAfterContentChange();
+      isDirty = true;
       showToast('Loaded ' + result.slideCount + ' slides! Click SAVE CHANGES to keep them online.');
     } catch (err) {
       showToast(err.message || 'Could not load that PowerPoint file', true);
@@ -377,7 +428,9 @@
   }
 
   function setupDraggable(el) {
-    if (el.dataset.dragBound) return;
+    const existing = dragHandlers.get(el);
+    if (existing) el.removeEventListener('mousedown', existing);
+    dragHandlers.set(el, onDragStart);
     el.dataset.dragBound = '1';
     el.addEventListener('mousedown', onDragStart);
   }
@@ -385,9 +438,9 @@
   function setupInsertedTextbox(box) {
     box.setAttribute('contenteditable', 'true');
     box.setAttribute('spellcheck', 'true');
-    if (!box.dataset.inputBound) {
-      box.dataset.inputBound = '1';
-      box.addEventListener('input', () => { isDirty = true; });
+    bindInputTracking(box);
+    if (!box.dataset.focusBound) {
+      box.dataset.focusBound = '1';
       box.addEventListener('focus', () => {
         if (box.textContent.trim() === 'Type your text here...') box.textContent = '';
       });
@@ -601,19 +654,13 @@
       if (el.closest('#editorBar') || el.closest('script') || el.closest('canvas')) return;
       el.setAttribute('contenteditable', 'true');
       el.setAttribute('spellcheck', 'true');
-      if (!el.dataset.inputBound) {
-        el.dataset.inputBound = '1';
-        el.addEventListener('input', () => { isDirty = true; });
-      }
+      bindInputTracking(el);
       setupDraggable(el);
     });
     document.querySelectorAll('.fund-legend > div').forEach((el) => {
       el.setAttribute('contenteditable', 'true');
       el.setAttribute('spellcheck', 'true');
-      if (!el.dataset.inputBound) {
-        el.dataset.inputBound = '1';
-        el.addEventListener('input', () => { isDirty = true; });
-      }
+      bindInputTracking(el);
       setupDraggable(el);
     });
     enableInsertedElements();
@@ -666,11 +713,8 @@
           Reveal.sync();
           Reveal.layout();
         }
-        wrapSlideContent();
-        buildSlidePreviews();
         if (data.zoom) {
           slideZoom = data.zoom;
-          applySlideZoom();
         }
         if (window.__editorMedia) {
           window.__editorMedia.loadSaveData(data);
@@ -700,7 +744,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          html: slides.innerHTML,
+          html: getSlidesHtmlForSave(),
           zoom: slideZoom,
           mediaLibrary: mediaData.mediaLibrary || [],
           globalLogo: mediaData.globalLogo || null,
@@ -724,14 +768,8 @@
   async function refreshContent() {
     if (isDirty && !confirm('You have unsaved changes. Refresh anyway and lose them?')) return;
     await loadSavedContent();
-    if (isEditable) enableEditing();
-    wrapSlideContent();
-    if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
-      window.__editorMedia.applyGlobalLogo();
-    }
-    buildSlidePreviews();
+    refreshEditorAfterContentChange();
     isDirty = false;
-    layoutForEditor();
     showToast('Loaded the latest saved version.');
   }
 
@@ -754,12 +792,7 @@
     await loadSavedContent();
 
     if (isEditable) {
-      wrapSlideContent();
-      if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
-        window.__editorMedia.applyGlobalLogo();
-      }
-      buildSlidePreviews();
-      enableEditing();
+      refreshEditorAfterContentChange();
       bindNavigation();
       bindFormatToolbar();
       layoutForEditor();
