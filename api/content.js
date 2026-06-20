@@ -22,13 +22,14 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { html } = await request.json();
+    const { html, zoom } = await request.json();
     if (!html || typeof html !== 'string') {
       return Response.json({ ok: false, error: 'Missing slide content' }, { status: 400 });
     }
 
     const payload = {
       html,
+      zoom: typeof zoom === 'number' ? zoom : null,
       updatedAt: new Date().toISOString(),
     };
 

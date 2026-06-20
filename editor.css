@@ -46,13 +46,24 @@ body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
   font-family: Inter, sans-serif;
 }
 
-#prevBtn, #nextBtn, #refreshBtn {
+#prevBtn, #nextBtn, #refreshBtn, #zoomOutBtn, #zoomInBtn {
   background: #334155;
   color: #f8fafc;
 }
 
-#prevBtn:hover, #nextBtn:hover, #refreshBtn:hover {
+#prevBtn:hover, #nextBtn:hover, #refreshBtn:hover, #zoomOutBtn:hover, #zoomInBtn:hover {
   background: #475569;
+}
+
+#dragModeBtn {
+  background: #7c3aed;
+  color: white;
+}
+
+#dragModeBtn.active {
+  background: #f59e0b;
+  color: #0f172a;
+  box-shadow: 0 0 0 2px #fbbf24;
 }
 
 #saveBtn {
@@ -67,13 +78,14 @@ body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
 #saveBtn:hover { filter: brightness(1.1); }
 #saveBtn:disabled { opacity: 0.6; cursor: wait; }
 
-#slideCounter, #lastSaved {
+#slideCounter, #lastSaved, #zoomLevel {
   color: #22d3ee;
   font-weight: 600;
   font-size: 12px;
 }
 
-#lastSaved { color: #94a3b8; font-weight: 500; min-width: 160px; }
+#lastSaved { color: #94a3b8; font-weight: 500; min-width: 140px; }
+#zoomLevel { min-width: 50px; text-align: center; }
 
 /* Text formatting toolbar */
 #formatToolbar {
@@ -124,7 +136,7 @@ body.view-mode .reveal { height: 100vh !important; top: 0 !important; }
   margin: 0 4px;
 }
 
-/* Reveal layout fix for editor bar */
+/* ---- EDIT MODE: disable Reveal.js zoom/scaling ---- */
 body.edit-mode .reveal {
   position: fixed !important;
   top: var(--editor-total-height) !important;
@@ -133,42 +145,83 @@ body.edit-mode .reveal {
   width: 100% !important;
   height: calc(100vh - var(--editor-total-height)) !important;
   margin: 0 !important;
+  overflow: hidden !important;
+}
+
+body.edit-mode .reveal .viewport {
+  overflow: hidden !important;
+  height: 100% !important;
 }
 
 body.edit-mode .reveal .slides {
-  text-align: left;
+  transform: none !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
 }
 
-/* Fit content — scroll inside slide if needed */
 body.edit-mode .reveal .slides > section {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
+  display: none !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
   height: 100% !important;
-  padding: 0.5rem 1rem 1.5rem !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  padding: 1.25rem 2rem 2rem !important;
   box-sizing: border-box !important;
+  transform: none !important;
+  text-align: left !important;
+}
+
+body.edit-mode .reveal .slides > section.present {
+  display: block !important;
+  z-index: 2;
 }
 
 body.edit-mode .reveal .slides > section::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
+}
+
+body.edit-mode .reveal .slides > section::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.8);
 }
 
 body.edit-mode .reveal .slides > section::-webkit-scrollbar-thumb {
-  background: rgba(34, 211, 238, 0.4);
-  border-radius: 3px;
+  background: rgba(34, 211, 238, 0.55);
+  border-radius: 5px;
 }
 
-/* Slightly smaller text in edit mode so everything fits better */
-body.edit-mode .reveal h1 { font-size: 2.2em !important; line-height: 1.1 !important; }
-body.edit-mode .reveal h2 { font-size: 1.65em !important; margin-bottom: 0.4em !important; }
-body.edit-mode .reveal h3 { font-size: 1.15em !important; }
-body.edit-mode .reveal p,
-body.edit-mode .reveal li { font-size: 0.82em !important; line-height: 1.45 !important; }
-body.edit-mode .reveal .subtitle { font-size: 1em !important; }
-body.edit-mode .reveal .content-wrap { padding: 0.75rem 1.25rem !important; max-width: 100% !important; }
-body.edit-mode .reveal .stat-card .value { font-size: 1.5em !important; }
-body.edit-mode .reveal .chapter-number { font-size: 3.5em !important; }
-body.edit-mode .reveal .hero-title { font-size: 2.4em !important; }
+body.edit-mode .reveal .slides > section {
+  scrollbar-width: thin;
+  scrollbar-color: #22d3ee #0f172a;
+}
 
+/* Zoom wrapper inside each slide */
+body.edit-mode .slide-zoom-wrap {
+  transform-origin: top left;
+  transition: transform 0.15s ease;
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* Smaller default text in edit mode */
+body.edit-mode .reveal h1 { font-size: 1.9em !important; line-height: 1.15 !important; }
+body.edit-mode .reveal h2 { font-size: 1.45em !important; margin-bottom: 0.4em !important; }
+body.edit-mode .reveal h3 { font-size: 1.05em !important; }
+body.edit-mode .reveal p,
+body.edit-mode .reveal li { font-size: 0.78em !important; line-height: 1.4 !important; }
+body.edit-mode .reveal .subtitle { font-size: 0.95em !important; }
+body.edit-mode .reveal .content-wrap { padding: 0.5rem 1rem !important; max-width: 100% !important; }
+body.edit-mode .reveal .stat-card .value { font-size: 1.3em !important; }
+body.edit-mode .reveal .chapter-number { font-size: 3em !important; }
+body.edit-mode .reveal .hero-title { font-size: 2em !important; }
+
+/* Editable elements */
 [contenteditable="true"] {
   outline: none;
   border-radius: 4px;
@@ -183,6 +236,27 @@ body.edit-mode .reveal .hero-title { font-size: 2.4em !important; }
 [contenteditable="true"]:focus {
   background: rgba(34, 211, 238, 0.12);
   box-shadow: 0 0 0 2px #22d3ee;
+}
+
+/* Drag mode */
+body.drag-mode [contenteditable="true"] {
+  cursor: grab;
+  user-select: none;
+}
+
+body.drag-mode [contenteditable="true"]:active {
+  cursor: grabbing;
+}
+
+body.drag-mode [contenteditable="true"].is-dragging {
+  cursor: grabbing;
+  box-shadow: 0 0 0 2px #f59e0b, 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+}
+
+body.drag-mode [contenteditable="true"].is-positioned {
+  background: rgba(245, 158, 11, 0.1);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.5);
 }
 
 .save-toast {
@@ -205,3 +279,22 @@ body.edit-mode .reveal .hero-title { font-size: 2.4em !important; }
 
 .save-toast.show { opacity: 1; transform: translateY(0); }
 .save-toast.error { background: #ef4444; }
+
+/* Scroll hint */
+.scroll-hint {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9998;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  color: #94a3b8;
+  font-size: 11px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  pointer-events: none;
+  display: none;
+}
+
+body.edit-mode .scroll-hint { display: block; }

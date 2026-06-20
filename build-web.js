@@ -25,21 +25,26 @@ if (!html.includes('editor.css')) {
 const editorBar = `<div id="editorBar">
   <div class="editor-instructions">
     <strong>Editing mode:</strong>
-    Click any text to edit &nbsp;|&nbsp;
-    Use formatting buttons below &nbsp;|&nbsp;
-    <strong>SAVE CHANGES</strong> when done &nbsp;|&nbsp;
-    <strong>REFRESH LATEST</strong> to see others' edits
+    Click text to edit &nbsp;|&nbsp;
+    Turn on <strong>MOVE TEXT</strong> to drag boxes freely &nbsp;|&nbsp;
+    Scroll inside slide if content is long &nbsp;|&nbsp;
+    Use <strong>+ / -</strong> to zoom &nbsp;|&nbsp;
+    <strong>SAVE CHANGES</strong> when done
   </div>
   <div class="editor-controls">
     <button type="button" id="prevBtn">&larr; Previous</button>
     <span id="slideCounter">Slide 1</span>
     <button type="button" id="nextBtn">Next &rarr;</button>
+    <button type="button" id="zoomOutBtn" title="Zoom out">&minus;</button>
+    <span id="zoomLevel">85%</span>
+    <button type="button" id="zoomInBtn" title="Zoom in">+</button>
+    <button type="button" id="dragModeBtn">MOVE TEXT: OFF</button>
     <button type="button" id="refreshBtn">REFRESH LATEST</button>
     <span id="lastSaved"></span>
     <button type="button" id="saveBtn">SAVE CHANGES</button>
   </div>
   <div id="formatToolbar">
-    <span class="fmt-label">Format selected text:</span>
+    <span class="fmt-label">Format text:</span>
     <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
     <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
     <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
@@ -52,7 +57,8 @@ const editorBar = `<div id="editorBar">
     <button type="button" data-cmd="alignRight" title="Align right">Right</button>
   </div>
 </div>
-<div class="save-toast" id="saveToast">Saved!</div>`;
+<div class="save-toast" id="saveToast">Saved!</div>
+<div class="scroll-hint">Scroll inside the slide area if content goes below the screen</div>`;
 
 // Strip any previous editor injection before re-adding
 html = html.replace(/<body[^>]*>[\s\S]*?<div class="reveal">/, '<body class="edit-mode">\n' + editorBar + '\n  <div class="reveal">');
