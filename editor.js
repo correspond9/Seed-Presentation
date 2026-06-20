@@ -22,6 +22,7 @@
       buildSlidePreviews,
       showToast,
       layoutForEditor,
+      getSlideZoom: () => slideZoom,
     };
     if (window.__editorMediaInit) window.__editorMediaInit(window.__editorApi);
   }
@@ -521,7 +522,7 @@
 
   function onDragStart(e) {
     if (!dragMode) return;
-    if (e.target.closest('.remove-inserted-btn')) return;
+    if (e.target.closest('.remove-inserted-btn, .remove-logo-btn, .logo-resize-handle')) return;
     e.preventDefault();
     e.stopPropagation();
 

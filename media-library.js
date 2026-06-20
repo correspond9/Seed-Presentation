@@ -97,6 +97,109 @@
     markDirty();
   }
 
+  let resizingLogo = null;
+
+  function setLogoWidth(wrap, width) {
+    const w = Math.max(40, Math.min(480, Math.round(width)));
+    wrap.style.width = w + 'px';
+    const img = wrap.querySelector('img');
+    if (img) img.style.maxWidth = w + 'px';
+    return w;
+  }
+
+  function getLogoWidth(wrap) {
+    const w = parseFloat(wrap.style.width);
+    if (!isNaN(w) && w > 0) return w;
+    return wrap.offsetWidth || 100;
+  }
+
+  function ensureResizeHandles(wrap) {
+    if (wrap.querySelector('.logo-resize-handle')) return;
+    ['nw', 'ne', 'sw', 'se'].forEach((corner) => {
+      const handle = document.createElement('span');
+      handle.className = 'logo-resize-handle logo-resize-' + corner;
+      handle.dataset.corner = corner;
+      handle.title = 'Drag to resize logo';
+      handle.addEventListener('mousedown', (e) => onLogoResizeStart(e, wrap, corner));
+      wrap.appendChild(handle);
+    });
+  }
+
+  function onLogoResizeStart(e, wrap, corner) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const api = getEditorApi();
+    const parent = wrap.closest('.slide-zoom-wrap');
+    if (!parent) return;
+
+    const zoom = api.getSlideZoom ? api.getSlideZoom() : 1;
+    const startWidth = getLogoWidth(wrap);
+
+    resizingLogo = {
+      wrap,
+      corner,
+      startX: e.clientX,
+      startWidth,
+      startLeft: parseFloat(wrap.style.left),
+      zoom,
+      hadLeft: wrap.style.left !== '' && wrap.style.left !== 'auto',
+    };
+
+    document.addEventListener('mousemove', onLogoResizeMove);
+    document.addEventListener('mouseup', onLogoResizeEnd);
+    wrap.classList.add('is-resizing');
+  }
+
+  function onLogoResizeMove(e) {
+    if (!resizingLogo) return;
+    e.preventDefault();
+
+    const { wrap, corner, startX, startWidth, startLeft, zoom, hadLeft } = resizingLogo;
+    const deltaX = (e.clientX - startX) / zoom;
+    let newWidth = startWidth;
+
+    if (corner === 'se' || corner === 'ne') {
+      newWidth = startWidth + deltaX;
+    } else {
+      newWidth = startWidth - deltaX;
+      if (hadLeft && !isNaN(startLeft)) {
+        wrap.style.left = (startLeft + (startWidth - newWidth)) + 'px';
+        wrap.style.right = 'auto';
+        wrap.style.bottom = wrap.style.bottom || 'auto';
+      }
+    }
+
+    setLogoWidth(wrap, newWidth);
+    markDirty();
+  }
+
+  function onLogoResizeEnd() {
+    if (!resizingLogo) return;
+
+    const { wrap } = resizingLogo;
+    const section = wrap.closest('section');
+    const newWidth = getLogoWidth(wrap);
+    const isCustom = section && section.dataset.logoCustom === 'true';
+
+    if (!isCustom && globalLogo) {
+      globalLogo.width = newWidth;
+      document.querySelectorAll('.reveal .slides > section').forEach((s) => {
+        if (s.dataset.logoExempt === 'true' || s.dataset.logoCustom === 'true') return;
+        const logoWrap = s.querySelector(':scope .slide-zoom-wrap > .global-slide-logo');
+        if (logoWrap && logoWrap !== wrap) setLogoWidth(logoWrap, newWidth);
+      });
+    } else if (section) {
+      section.dataset.logoCustom = 'true';
+    }
+
+    wrap.classList.remove('is-resizing');
+    resizingLogo = null;
+    document.removeEventListener('mousemove', onLogoResizeMove);
+    document.removeEventListener('mouseup', onLogoResizeEnd);
+    markDirty();
+  }
+
   function positionLogoAtCorner(wrap, corner, width) {
     const pos = CORNERS[corner] || CORNERS['top-right'];
     wrap.style.position = 'absolute';
@@ -106,12 +209,7 @@
     wrap.style.bottom = pos.bottom;
     wrap.style.width = (width || 100) + 'px';
     wrap.style.zIndex = '30';
-    const img = wrap.querySelector('img');
-    if (img) {
-      img.style.width = '100%';
-      img.style.height = 'auto';
-      img.style.maxWidth = (width || 100) + 'px';
-    }
+    setLogoWidth(wrap, width || 100);
   }
 
   function createLogoElement(media, config) {
@@ -152,6 +250,7 @@
       });
     }
     if (api.setupDraggable) api.setupDraggable(logoWrap);
+    ensureResizeHandles(logoWrap);
   }
 
   function applyGlobalLogo() {
