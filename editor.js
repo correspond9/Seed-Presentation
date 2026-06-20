@@ -289,6 +289,9 @@
     updateSlideCounter();
     updatePreviewSelection();
     disableRevealScaling();
+    if (window.initPresentationCharts) {
+      setTimeout(() => window.initPresentationCharts(false), 100);
+    }
     showToast('Jumped to slide ' + num);
   }
 
