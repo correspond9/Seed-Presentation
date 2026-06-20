@@ -29,7 +29,7 @@
             tension: 0.4,
           }],
         },
-        options: chartDefaults,
+        options: { ...chartDefaults, maintainAspectRatio: false },
       },
     },
     {
@@ -56,6 +56,7 @@
         },
         options: {
           ...chartDefaults,
+          maintainAspectRatio: false,
           scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, beginAtZero: true } },
         },
       },
@@ -106,6 +107,7 @@
     if (!el || !isChartVisible(el)) return;
 
     destroyChart(def.key, el);
+    el.removeAttribute('style');
     chartInstances[def.key] = new Chart(el, def.config);
 
     requestAnimationFrame(() => {
@@ -114,6 +116,29 @@
     setTimeout(() => {
       if (chartInstances[def.key]) chartInstances[def.key].resize();
     }, 120);
+  }
+
+  function recreateChartById(canvasId) {
+    const def = chartDefs.find((d) => d.id === canvasId);
+    if (!def) return;
+    const el = document.getElementById(canvasId);
+    if (!el) return;
+    destroyChart(def.key, el);
+    el.removeAttribute('style');
+    chartInstances[def.key] = new Chart(el, def.config);
+    requestAnimationFrame(() => {
+      if (chartInstances[def.key]) chartInstances[def.key].resize();
+    });
+    setTimeout(() => {
+      if (chartInstances[def.key]) chartInstances[def.key].resize();
+    }, 120);
+  }
+
+  function recreateChartsInBox(box) {
+    if (!box) return;
+    box.querySelectorAll('canvas[id]').forEach((canvas) => {
+      recreateChartById(canvas.id);
+    });
   }
 
   function initPresentationCharts(force) {
@@ -132,6 +157,8 @@
   }
 
   window.initPresentationCharts = initPresentationCharts;
+  window.recreatePresentationChart = recreateChartById;
+  window.recreateChartsInBox = recreateChartsInBox;
 
   function bindChartEvents() {
     if (typeof Reveal === 'undefined') return;

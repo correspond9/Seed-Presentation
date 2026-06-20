@@ -313,9 +313,13 @@ body.edit-mode.preview-collapsed .preview-toggle-btn {
   transform: none !important;
 }
 
-.preview-thumb-inner video,
-.preview-thumb-inner canvas {
+.preview-thumb-inner video {
   display: none !important;
+}
+
+.preview-thumb-inner .preview-chart-snapshot {
+  max-height: 48px;
+  object-fit: contain;
 }
 
 body.edit-mode .editor-stage {
@@ -609,6 +613,16 @@ body.drag-mode .inserted-wrap.is-dragging {
 /* Chart boxes — drag and resize */
 body.edit-mode .chart-box {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+body.edit-mode .chart-box canvas {
+  flex: 1 1 auto;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
 }
 
 body.edit-mode .chart-box .chart-resize-handle {

@@ -85,8 +85,30 @@
       inner.className = 'preview-thumb-inner';
 
       const zoomWrap = section.querySelector(':scope > .slide-zoom-wrap');
-      const source = zoomWrap ? zoomWrap.cloneNode(true) : section.cloneNode(true);
-      source.querySelectorAll('video, canvas, script').forEach((el) => el.remove());
+      const sourceRoot = zoomWrap || section;
+      const source = sourceRoot.cloneNode(true);
+      source.querySelectorAll('video, script').forEach((el) => el.remove());
+      const origCanvases = sourceRoot.querySelectorAll('canvas');
+      source.querySelectorAll('canvas').forEach((canvas, idx) => {
+        const original = origCanvases[idx];
+        const chart = original && typeof Chart !== 'undefined' ? Chart.getChart(original) : null;
+        const img = document.createElement('img');
+        img.className = 'preview-chart-snapshot';
+        img.alt = '';
+        try {
+          img.src = chart ? chart.toBase64Image() : (original && original.toDataURL ? original.toDataURL() : '');
+        } catch (err) {
+          img.src = '';
+        }
+        if (img.src) {
+          img.style.width = '100%';
+          img.style.height = 'auto';
+          img.style.display = 'block';
+          canvas.replaceWith(img);
+        } else {
+          canvas.remove();
+        }
+      });
       inner.appendChild(source);
       thumb.appendChild(inner);
 
@@ -182,6 +204,12 @@
     });
     clone.querySelectorAll('.is-dragging,.is-positioned,.is-resizing').forEach((el) => {
       el.classList.remove('is-dragging', 'is-positioned', 'is-resizing');
+    });
+    clone.querySelectorAll('.chart-resize-handle').forEach((el) => el.remove());
+    clone.querySelectorAll('canvas').forEach((canvas) => {
+      canvas.removeAttribute('style');
+      canvas.removeAttribute('width');
+      canvas.removeAttribute('height');
     });
     return clone.innerHTML;
   }
@@ -445,9 +473,20 @@
   function resizeChartsInBox(box) {
     if (typeof Chart === 'undefined' || !box) return;
     box.querySelectorAll('canvas').forEach((canvas) => {
+      canvas.style.removeProperty('width');
+      canvas.style.removeProperty('height');
+      canvas.style.removeProperty('max-height');
       const chart = Chart.getChart(canvas);
       if (chart) chart.resize();
     });
+  }
+
+  function recreateChartsInBox(box) {
+    if (window.recreateChartsInBox) {
+      window.recreateChartsInBox(box);
+      return;
+    }
+    resizeChartsInBox(box);
   }
 
   function ensureChartResizeHandles(box) {
@@ -519,20 +558,16 @@
       }
     }
 
-    const canvas = box.querySelector('canvas');
-    if (canvas) {
-      canvas.style.width = '100%';
-      canvas.style.maxHeight = '100%';
-    }
-
     resizeChartsInBox(box);
     isDirty = true;
   }
 
   function onChartResizeEnd() {
     if (!resizingChart) return;
-    resizingChart.box.classList.remove('is-resizing');
-    resizeChartsInBox(resizingChart.box);
+    const box = resizingChart.box;
+    box.classList.remove('is-resizing');
+    recreateChartsInBox(box);
+    setTimeout(() => recreateChartsInBox(box), 80);
     resizingChart = null;
     document.removeEventListener('mousemove', onChartResizeMove);
     document.removeEventListener('mouseup', onChartResizeEnd);
@@ -736,6 +771,10 @@
   function onDragEnd() {
     if (!dragging) return;
     const section = dragging.closest('section');
+    if (dragging.classList.contains('chart-box')) {
+      recreateChartsInBox(dragging);
+      setTimeout(() => recreateChartsInBox(dragging), 80);
+    }
     if (window.__editorMedia && window.__editorMedia.onLogoDragEnd) {
       window.__editorMedia.onLogoDragEnd(dragging, section);
     }
