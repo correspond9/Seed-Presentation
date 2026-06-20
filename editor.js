@@ -159,7 +159,10 @@
     buildSlidePreviews();
     disableRevealScaling();
     updateSlideCounter();
-    if (window.initPresentationCharts) window.initPresentationCharts(true);
+    if (window.initPresentationCharts) {
+      window.initPresentationCharts(true);
+      setTimeout(() => window.initPresentationCharts(false), 250);
+    }
     if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
       window.__editorMedia.applyGlobalLogo();
     }
@@ -688,6 +691,7 @@
       updateSlideCounter();
       updatePreviewSelection();
       disableRevealScaling();
+      if (window.initPresentationCharts) window.initPresentationCharts(false);
       if (window.__editorMedia && window.__editorMedia.applyGlobalLogo) {
         window.__editorMedia.applyGlobalLogo();
       }

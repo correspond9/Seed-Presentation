@@ -1,4 +1,4 @@
-/* Chart.js setup for presentation slides — safe to re-run after slide HTML reload */
+/* Chart.js setup for presentation slides */
 (function () {
   const chartInstances = {};
 
@@ -12,35 +12,11 @@
     },
   };
 
-  function destroyCharts() {
-    Object.keys(chartInstances).forEach((key) => {
-      if (chartInstances[key]) {
-        chartInstances[key].destroy();
-        delete chartInstances[key];
-      }
-    });
-  }
-
-  function initPresentationCharts(force) {
-    if (typeof Chart === 'undefined') return;
-
-    const marketEl = document.getElementById('marketChart');
-    const revenueEl = document.getElementById('revenueChart');
-    const fundEl = document.getElementById('fundChart');
-
-    if (!force) {
-      const alreadyRendered = [marketEl, revenueEl, fundEl].some((el) => el && Chart.getChart(el));
-      if (alreadyRendered) return;
-    }
-
-    destroyCharts();
-
-    const marketEl = document.getElementById('marketChart');
-    const revenueEl = document.getElementById('revenueChart');
-    const fundEl = document.getElementById('fundChart');
-
-    if (marketEl) {
-      chartInstances.market = new Chart(marketEl, {
+  const chartDefs = [
+    {
+      id: 'marketChart',
+      key: 'market',
+      config: {
         type: 'line',
         data: {
           labels: ['2024', '2025', '2026', '2027', '2028'],
@@ -54,11 +30,12 @@
           }],
         },
         options: chartDefaults,
-      });
-    }
-
-    if (revenueEl) {
-      chartInstances.revenue = new Chart(revenueEl, {
+      },
+    },
+    {
+      id: 'revenueChart',
+      key: 'revenue',
+      config: {
         type: 'bar',
         data: {
           labels: ['Year 1', 'Year 2', 'Year 3'],
@@ -81,11 +58,12 @@
           ...chartDefaults,
           scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, beginAtZero: true } },
         },
-      });
-    }
-
-    if (fundEl) {
-      chartInstances.fund = new Chart(fundEl, {
+      },
+    },
+    {
+      id: 'fundChart',
+      key: 'fund',
+      config: {
         type: 'doughnut',
         data: {
           labels: ['Compliance 35%', 'Technology 30%', 'Marketing 20%', 'Banking 10%', 'Operations 5%'],
@@ -99,14 +77,68 @@
           responsive: true,
           plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } } },
         },
-      });
+      },
+    },
+  ];
+
+  function destroyChart(key, el) {
+    if (chartInstances[key]) {
+      chartInstances[key].destroy();
+      delete chartInstances[key];
     }
+    if (el && typeof Chart !== 'undefined') {
+      const existing = Chart.getChart(el);
+      if (existing) existing.destroy();
+    }
+  }
+
+  function isChartVisible(el) {
+    if (!el) return false;
+    const rect = el.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return false;
+    const section = el.closest('section');
+    if (section && !section.classList.contains('present')) return false;
+    return true;
+  }
+
+  function createChart(def) {
+    const el = document.getElementById(def.id);
+    if (!el || !isChartVisible(el)) return;
+
+    destroyChart(def.key, el);
+    chartInstances[def.key] = new Chart(el, def.config);
+
+    requestAnimationFrame(() => {
+      if (chartInstances[def.key]) chartInstances[def.key].resize();
+    });
+    setTimeout(() => {
+      if (chartInstances[def.key]) chartInstances[def.key].resize();
+    }, 120);
+  }
+
+  function initPresentationCharts(force) {
+    if (typeof Chart === 'undefined') return;
+
+    if (force) {
+      chartDefs.forEach((def) => destroyChart(def.key, document.getElementById(def.id)));
+    }
+
+    chartDefs.forEach((def) => {
+      const el = document.getElementById(def.id);
+      if (!el) return;
+      if (!force && Chart.getChart(el)) return;
+      createChart(def);
+    });
   }
 
   window.initPresentationCharts = initPresentationCharts;
 
-  if (typeof Reveal !== 'undefined') {
+  function bindChartEvents() {
+    if (typeof Reveal === 'undefined') return;
     Reveal.on('ready', () => initPresentationCharts(false));
     Reveal.on('slidechanged', () => initPresentationCharts(false));
+    Reveal.on('fragmentshown', () => initPresentationCharts(false));
   }
+
+  bindChartEvents();
 })();
