@@ -3,6 +3,12 @@
   "buildCommand": "node build-web.js",
   "outputDirectory": ".",
   "framework": null,
+  "functions": {
+    "api/content.js": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
