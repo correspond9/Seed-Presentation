@@ -37,7 +37,8 @@ export async function GET() {
         }
       }
     } catch (headErr) {
-      if (!/not found|404/i.test(headErr.message || '')) {
+      const headMsg = headErr && headErr.message ? headErr.message : '';
+      if (!/not exist|not found|404/i.test(headMsg)) {
         throw headErr;
       }
     }
