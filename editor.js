@@ -403,7 +403,7 @@
       const res = await fetch('/api/export-pptx', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html: slides.innerHTML }),
+        body: JSON.stringify({ html: getSlidesHtmlForSave() }),
       });
 
       if (!res.ok) {
